@@ -37,12 +37,8 @@ namespace RealifeGM.de.jojoa.player
                     {
                         string hashedpw_stored = mysql.MySQL_PlayerData.getString(p, "Password");
 
-                        MD5 md5 = new MD5CryptoServiceProvider();
-                        byte[] textToHash = Encoding.Default.GetBytes(arguments[0].ToString());
-                        byte[] result = md5.ComputeHash(textToHash);
 
-
-                        string hashedpw_input = System.BitConverter.ToString(result);
+                        string hashedpw_input = API.getHashSHA256(arguments[0].ToString());
                         if (hashedpw_input == hashedpw_stored)
                         {
                             for (int i = 0; i < 50; i++)

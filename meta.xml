@@ -13,6 +13,7 @@
   <script src="de.jojoa.mysql/MYSQL_PropertyData.cs" type="server" lang="csharp" />
   <script src="de.jojoa.mysql/MYSQL_Ranks.cs" type="server" lang="csharp" />
   <script src="de.jojoa.mysql/MYSQL_Vehicles.cs" type="server" lang="csharp" />
+  <script src="de.jojoa.mysql/MYSQL_InventoryData.cs" type="server" lang="csharp" />
   
   <script src="de.jojoa.player/player_cmds.cs" type="server" lang="csharp" />
   <script src="de.jojoa.player/player_connect.cs" type="server" lang="csharp" />
@@ -28,7 +29,7 @@
   <script src="de.jojoa.data/Property.cs" type="server" lang="csharp" />
   <script src="de.jojoa.data/Vehicle.cs" type="server" lang="csharp" />
   <script src="de.jojoa.data/Bank_Account.cs" type="server" lang="csharp" />
-  <script src="de.jojoa.data/data_methods.cs" type="server" lang="csharp" />
+  <script src="de.jojoa.data/Inventory.cs" type="server" lang="csharp" />
   
    <script src="de.jojoa.events/race_event.cs" type="server" lang="csharp" />
   
