@@ -36,12 +36,9 @@ namespace RealifeGM.de.jojoa.player
                         if(arguments[0] == arguments[1])
                         {
                             string password = arguments[0].ToString();
-                            MD5 md5 = new MD5CryptoServiceProvider();
-                            byte[] textToHash = Encoding.Default.GetBytes(password);
-                            byte[] result = md5.ComputeHash(textToHash);
-
                             
-                            string hashedpw = System.BitConverter.ToString(result);
+                            
+                            string hashedpw = API.getHashSHA256(password);
                             mysql.MySQL_PlayerData.registerPlayer(p, hashedpw);
                             Account a = new Account(p.name);
                             mysql.MySQL_Ranks.registerPlayer(a);
