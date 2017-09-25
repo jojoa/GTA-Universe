@@ -14,17 +14,17 @@ namespace RealifeGM.de.jojoa.data
         public Vehicle v;
         public Account owner;
         public VehicleManifest vm;
-        //public Inventory inv;
+        public Inventory inv;
         public int id;
 
-        public VehicleD(Vehicle v, Account owner,string i/*,int invid*/)
+        public VehicleD(Vehicle v, Account owner,string i,int invid)
         {
             this.v = v;
             vm = VehicleInfo.Get(v);
             this.owner = owner;
             methods.getMethods.lvd.Add(this);
             id = Convert.ToInt32(i);
-            //inv = methods.getMethods.getInvById(invid);
+            inv = methods.getMethods.getInvById(invid);
         }
     }
 }
