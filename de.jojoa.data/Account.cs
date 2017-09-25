@@ -26,7 +26,7 @@ namespace RealifeGM.de.jojoa.data
         public Account(string nameI)
         {
             name = nameI;
-            id = mysql.MySQL_PlayerData.getIntByName(name, "id2");
+            id = mysql.MySQL_PlayerData.getIntByName(name, "id");
             rank = mysql.MySQL_Ranks.getRank(name);
             money = mysql.MySQL_PlayerData.getIntByName(name, "money");
             skin = mysql.MySQL_PlayerData.getStringByName(name, "skin");
