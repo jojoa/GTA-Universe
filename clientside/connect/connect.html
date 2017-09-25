@@ -1,7 +1,9 @@
+﻿<!DOCTYPE html>
 <html>
 <head>
-<style>
-        .main {
+ <meta charset="UTF-8">
+    <style>
+        .login-page {
             width: 360px;
             padding: 8% 0 0;
             margin: auto;
@@ -53,15 +55,20 @@
                     background: #43A047
                 }
 
-            
+            .form .message {
+                margin: 15px 0 0;
+                color: #b3b3b3;
+                font-size: 12px;
+            }
 
-            form { display:none; }
+                .form .message a {
+                    color: #4CAF50;
+                    text-decoration: none;
+                }
 
-.closed { background:red; }
-
-.open { background:green; }
-			
-			.initial-open {display:block;}
+            .form .register-form {
+                display: none;
+            }
 
         .container {
             position: relative;
@@ -109,82 +116,58 @@
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
-</style>
+    </style>
 </head>
 <body>
-<div class="main">
-<div class="form">
-<p id="knt">Kontonummer:</p>
-<br>
-<button class="closed" id="Einzahlen">Einzahlen</button>
-<form class="menu">
-<input type="number" id="moneyein" placeholder="Geldbetrag" />
-<button id="einzahlbtn">Einzahlen</button>
-</form>
-<button class="closed" id="auszahlen">Auszahlen</button>
-<form class="menu">
-<input type="number" id="moneyaus" placeholder="Geldbetrag" />
-<button id="auszahlbtn">Auszahlen</button>
-</form>
-<button class="closed" id="uberweisen">Überweisen</button>
-<form class="menu">
-<input type="number" id="moneyuber" placeholder="Geldbetrag" />
-<input type="number" id="empfuber" placeholder="Empfänger" />
-<button id="uberweisbtn">Überweisen</button>
-</form>
-
-
-
-
-
-
-</div>
-</div>
-<script src='js/jquery.js'></script>
+ <div class="login-page">
+  <div class="img">
+   <img src="img/Placeholder.jpg">
+  </div>
+  <div class="form">
+   <form class="register-form">
+    <input type="password" id="password1" placeholder="Passwort eingeben" />
+	<input type="password" id="password2" placeholder="Passwort wiederholen" />
+	<button id="regbutton">Registrieren</button>
+	<p class="message">Bereits registriert? <a href="#">Einloggen</a></p>
+   </form>
+   <form class="login-form">
+    <input type="password" id="password" placeholder="Passwort eingeben" />
+	<button id="button">Einloggen</button>
+	<p class="message">Nicht registriert? <a href="#">Registrieren</a></p>
+   </form>
+  </div>
+ </div>
+ <script src='js/jquery.js'></script>
 </body>
 </html>
 
+
 <script>
 
-  $(document).ready(function(){
- $("button").click(function(){ 
-  $('form').slideUp("fast");
-  $('button').removeClass('open').addClass("closed");
-  $(this).next("form").slideDown("fast"); 
- });
-});
-
-
   
-  
-  
-document.getElementById("einzahlbtn").onclick = function () {
 
+    $('.message a').click(function () {
+        $('form').animate({ height: "toggle", opacity: "toggle" }, "slow");
+    });
 
-
-	        if (moneyein && moneyein.value) {
-                resourceCall("einzahl", moneyein.value);
+  document.getElementById("button").onclick = function () {
+       var password = document.getElementById("password");
+	        if (password && password.value) {
+                resourceCall("login", password.value);
                 
 			}
   }
-  
-document.getElementById("auszahlbtn").onclick = function () {
 
-	        if (moneyaus && moneyaus.value) {
-                resourceCall("auszahl", moneyaus.value);
-                
-			}
-  }
-  
-document.getElementById("uberweisbtn").onclick = function () {
-
-	        if (moneyuber && moneyuber.value) {
-                resourceCall("uberweis", moneyuber.value, empfuber.value);
-                
-			}
-  }
-  
- 
+  document.getElementById("regbutton").onclick = function () {
+      var pw1 = document.getElementById("password1");
+	  var pw2 = document.getElementById("password2");
+	       if (pw1 && pw1.value) {
+		     if (pw2 && pw2.value){
+		       resourceCall("register", pw1.value, pw2.value);
+		      }
+		   }
+		}
 
 
 </script> 
+        
