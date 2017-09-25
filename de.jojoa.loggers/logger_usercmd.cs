@@ -19,13 +19,13 @@ namespace RealifeGM.de.jojoa.loggers
             API.onResourceStart += onstart;
             API.onResourceStop += onstop;
         }
-        public static void onstart()
+        public void onstart()
         {
-            fs = File.Create("C:/Users/Armin/Documents/johannes/gtmp/resources/logs/usercmd_" + DateTime.Now.ToString() + ".txt");
+            fs = File.Create(API.getResourceFolder() + "/usercmd_" + DateTime.Now.ToString("dd-MM-yyyy") + ".txt");
             sw = new StreamWriter(fs);
         }
 
-        public static void onstop()
+        public void onstop()
         {
             sw.Close();
         }
