@@ -13,6 +13,7 @@
   <script src="de.jojoa.mysql/MYSQL_PropertyData.cs" type="server" lang="csharp" />
   <script src="de.jojoa.mysql/MYSQL_Ranks.cs" type="server" lang="csharp" />
   <script src="de.jojoa.mysql/MYSQL_Vehicles.cs" type="server" lang="csharp" />
+  <script src="de.jojoa.mysql/MYSQL_InventoryData.cs" type="server" lang="csharp" />
   
   <script src="de.jojoa.player/player_cmds.cs" type="server" lang="csharp" />
   <script src="de.jojoa.player/player_connect.cs" type="server" lang="csharp" />
