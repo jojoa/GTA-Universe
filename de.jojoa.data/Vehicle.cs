@@ -25,7 +25,6 @@ namespace RealifeGM.de.jojoa.data
             methods.getMethods.lvd.Add(this);
             id = Convert.ToInt32(i);
             inv = methods.getMethods.getInvById(invid);
-            
         }
     }
 }
