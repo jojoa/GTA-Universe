@@ -8,11 +8,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RealifeGM.de.jojoa.main
+namespace RealifeGM.de.jojoa
 {
     class Main : Script
     {
-       
+        public static Config config;
+
         public Main()
         {
             API.onResourceStart += onScriptStart;
@@ -22,6 +23,8 @@ namespace RealifeGM.de.jojoa.main
         #region events
         public void onScriptStart()
         {
+            config = new Config(API.getResourceFolder() + "/config.xml");
+            
             API.consoleOutput(de.jojoa.methods.stringMethods.console_ressource_start);
             mysql.MySQL_InventoryData.loadInvs();
             mysql.MySQL_PlayerData.loadAccounts();
