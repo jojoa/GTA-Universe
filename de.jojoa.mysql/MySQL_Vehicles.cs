@@ -25,9 +25,10 @@ namespace RealifeGM.de.jojoa.mysql
         {
             if (isTableCreated())
             {
+            Vehicle vhc = MySQL_Inventory.createInv();
                 con = new MySqlConnection(conString);
                 cmd = con.CreateCommand();
-                cmd.CommandText = "INSERT INTO VehicleData (Name,model,color1,color2,spawnX,spawnY,spawnZ,spawnRX,spawnRY,spawnRZ) VALUES (@name,@model,@color1,@color2,@spawnX,@spawnY,@spawnZ,@spawnRX,@spawnRY,@spawnRZ)";
+                cmd.CommandText = "INSERT INTO VehicleData (Name,model,color1,color2,spawnX,spawnY,spawnZ,spawnRX,spawnRY,spawnRZ,invid) VALUES (@name,@model,@color1,@color2,@spawnX,@spawnY,@spawnZ,@spawnRX,@spawnRY,@spawnRZ,@invid)";
                 con.Open();
                 cmd.Parameters.AddWithValue("@name", owner.name);
                 cmd.Parameters.AddWithValue("@model", model);
@@ -40,11 +41,13 @@ namespace RealifeGM.de.jojoa.mysql
                 cmd.Parameters.AddWithValue("@spawnRX", rot.X);
                 cmd.Parameters.AddWithValue("@spawnRY", rot.Y);
                 cmd.Parameters.AddWithValue("@spawnRZ", rot.Z);
+                
+                cmd.Parameters.AddWithValue("@invid", vhc.id);
                 VehicleHash vh = API.shared.vehicleNameToModel(model);
 
                 Vehicle v = API.shared.createVehicle(vh, pos, rot, 4, 12);
                 v.numberPlate = "LS" + cmd.LastInsertedId.ToString("D4");
-                VehicleD vd = new VehicleD(v, owner, cmd.LastInsertedId.ToString());
+                VehicleD vd = new VehicleD(v, owner, cmd.LastInsertedId.ToString(),vhc.id);
                
                 cmd.ExecuteNonQuery();
                 con.Close();
@@ -60,7 +63,7 @@ namespace RealifeGM.de.jojoa.mysql
             {
                 con = new MySqlConnection(conString);
                 cmd = con.CreateCommand();
-                cmd.CommandText = "CREATE TABLE IF NOT EXISTS VehicleData (Name VARCHAR(100),model VARCHAR(100), color1 int,color2 int, spawnX double , spawnY double , spawnZ double, id int AUTO_INCREMENT)";
+                cmd.CommandText = "CREATE TABLE IF NOT EXISTS VehicleData (Name VARCHAR(100),model VARCHAR(100), color1 int,color2 int, spawnX double , spawnY double , spawnZ double,spawnRX double , spawnRY double , spawnRZ double, invid int, id int AUTO_INCREMENT)";
                 con.Open();
                 cmd.ExecuteNonQuery();
                 return true;
@@ -103,6 +106,7 @@ namespace RealifeGM.de.jojoa.mysql
                 reader = cmd.ExecuteReader();
                 while(reader.Read()) {
                     int id = reader.GetInt32("id");
+                    int vid = reader.GetInt32("invid");
                     VehicleHash model = API.shared.vehicleNameToModel(reader.GetString("model"));
                     Vector3 pos = new Vector3(reader.GetDouble("spawnX"), reader.GetDouble("spawnY"), reader.GetDouble("spawnZ"));
                     Vector3 rot = new Vector3(reader.GetDouble("spawnRX"), reader.GetDouble("spawnRY"), reader.GetDouble("spawnRZ"));
@@ -111,7 +115,7 @@ namespace RealifeGM.de.jojoa.mysql
                     int color2 = reader.GetInt32("color2");
                     Vehicle v = API.shared.createVehicle(model, pos, rot, color1, color2);
                     v.numberPlate = "LS" + id.ToString("D4");
-                    VehicleD vd = new VehicleD(v, owner, id.ToString());
+                    VehicleD vd = new VehicleD(v, owner, id.ToString(),vid.ToString());
                 }
                 con.Close();
             }
