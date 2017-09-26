@@ -25,7 +25,7 @@ namespace RealifeGM.de.jojoa.mysql
         {
             if (isTableCreated())
             {
-            Vehicle vhc = MySQL_Inventory.createInv();
+            Inventory vhc = MySQL_InventoryData.createInv();
                 con = new MySqlConnection(conString);
                 cmd = con.CreateCommand();
                 cmd.CommandText = "INSERT INTO VehicleData (Name,model,color1,color2,spawnX,spawnY,spawnZ,spawnRX,spawnRY,spawnRZ,invid) VALUES (@name,@model,@color1,@color2,@spawnX,@spawnY,@spawnZ,@spawnRX,@spawnRY,@spawnRZ,@invid)";
@@ -115,7 +115,7 @@ namespace RealifeGM.de.jojoa.mysql
                     int color2 = reader.GetInt32("color2");
                     Vehicle v = API.shared.createVehicle(model, pos, rot, color1, color2);
                     v.numberPlate = "LS" + id.ToString("D4");
-                    VehicleD vd = new VehicleD(v, owner, id.ToString(),vid.ToString());
+                    VehicleD vd = new VehicleD(v, owner, id.ToString(),vid);
                 }
                 con.Close();
             }
