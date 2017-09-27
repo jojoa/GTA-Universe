@@ -22,7 +22,7 @@ namespace RealifeGM.de.jojoa.data
 			}
 		}
 
-        public string getConfig(string key)
+        public string getSettings(string key)
         {
         	if(!values.ContainsKey(key))
         		return null;

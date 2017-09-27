@@ -12,7 +12,7 @@ namespace RealifeGM.de.jojoa
 {
     class Main : Script
     {
-        public static Config config;
+        private Config config;
 
         public Main()
         {
@@ -23,8 +23,6 @@ namespace RealifeGM.de.jojoa
         #region events
         public void onScriptStart()
         {
-            config = new Config(API.getResourceFolder() + "/config.xml");
-            
             API.consoleOutput(de.jojoa.methods.stringMethods.console_ressource_start);
             mysql.MySQL_InventoryData.loadInvs();
             mysql.MySQL_PlayerData.loadAccounts();
@@ -41,7 +39,12 @@ namespace RealifeGM.de.jojoa
             Account IM = new Account("IM", 0);
         }
 
-        
+        public Config getConfig()
+        {
+            if(config == null)
+                config = new Config(API.getResourceFolder() + "/config.xml");
 
+            return config;
+        }
     }
 }
