@@ -22,8 +22,10 @@ namespace RealifeGM.de.jojoa.loggers
         }
         public void onstart()
         {
-             fs = File.Create(API.getResourceFolder() + "/teamcmd_" + DateTime.Now.ToString("dd-MM-yyyy") + ".txt");
-             sw = new StreamWriter(fs);
+            Directory.CreateDirectory(API.getResourceFolder() + "/logs");
+
+            fs = File.Create(API.getResourceFolder() + "/logs/teamcmd_" + DateTime.Now.ToString("dd-MM-yyyy") + ".txt");
+            sw = new StreamWriter(fs);
         }
 
         public void onstop()
