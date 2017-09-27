@@ -22,7 +22,15 @@ namespace RealifeGM.de.jojoa.mysql
 
         public MySQL_POIData()
         {
-            
+            API.onResourceStart += API_onResourceStart;
+        }
+
+        private void API_onResourceStart()
+        {
+            conString = "SERVER=" + API.getSetting<string>("db_host") + ";" 
+                        + "DATABASE=" + API.getSetting<string>("db_name") + ";" 
+                        + "UID=" + API.getSetting<string>("db_user") + ";" 
+                        + "PASSWORD=" + API.getSetting<string>("db_pass") + ";";
         }
 
         public static void loadPOI()
