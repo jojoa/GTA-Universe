@@ -22,8 +22,18 @@ namespace RealifeGM.de.jojoa.mysql
 
         public MySQL_PropertyData()
         {
-            API.onResourceStart += onstart;
+            API.onResourceStart += API_onResourceStart;
             API.onClientEventTrigger += API_onClientEventTrigger;
+        }
+
+        public void API_onResourceStart()
+        {
+            conString = "SERVER=" + API.getSetting<string>("db_host") + ";" 
+                        + "DATABASE=" + API.getSetting<string>("db_name") + ";" 
+                        + "UID=" + API.getSetting<string>("db_user") + ";" 
+                        + "PASSWORD=" + API.getSetting<string>("db_pass") + ";";
+
+            isTableCreated();
         }
 
         private void API_onClientEventTrigger(Client p, string eventName, params object[] arguments)
@@ -46,11 +56,6 @@ namespace RealifeGM.de.jojoa.mysql
 
                     break;
             }
-        }
-
-        public void onstart()
-        {
-            isTableCreated();
         }
 
         
