@@ -22,11 +22,11 @@ namespace RealifeGM.de.jojoa.mysql
 
         public MySQL_PropertyData()
         {
-            API.onResourceStart += onstart;
+            API.onResourceStart += API_onResourceStart;
             API.onClientEventTrigger += API_onClientEventTrigger;
         }
 
-        public void onstart()
+        public void API_onResourceStart()
         {
             conString = "SERVER=" + API.getSetting<string>("db_host") + ";" 
                         + "DATABASE=" + API.getSetting<string>("db_name") + ";" 
