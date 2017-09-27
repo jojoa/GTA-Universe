@@ -33,12 +33,12 @@ namespace RealifeGM.de.jojoa.mysql
         {
             if (isTableCreated())
             {
-                int price = 0;
+               
                 int count = methods.getMethods.getBanksByUser(owner).Count;
-                price = getPrice(count);
+              
                 con = new MySqlConnection(conString);
                 cmd = con.CreateCommand();
-                cmd.CommandText = "INSERT INTO BankData (money,Owner,price) VALUES (@money,@owner)";
+                cmd.CommandText = "INSERT INTO BankData (money,Owner) VALUES (@money,@owner)";
                 con.Open();
                 cmd.Parameters.AddWithValue("@money", 0);
                 cmd.Parameters.AddWithValue("@owner", owner.p.name);
@@ -62,7 +62,7 @@ namespace RealifeGM.de.jojoa.mysql
             {
                 
                 Account a = methods.getMethods.getAccountByName(reader.GetString("Owner"));
-                int number = reader.GetInt32("money");
+                int number = reader.GetInt32("number");
                 Bank_Account ba = new Bank_Account(a, number);
             }
             con.Close();
@@ -85,23 +85,7 @@ namespace RealifeGM.de.jojoa.mysql
           
         }
 
-        private static int getPrice(int count)
-        {
-           if(count < 2)
-            {
-                return 0;
-            }else if(count < 5) {
-                return 5;
-            }
-           else if(count < 10)
-            {
-                return 10;
-            } else
-            {
-                return 20;
-            }
-        }
-
+     
         public static int getInt(int banknumber, string get)
         {
             if (isTableCreated())
@@ -132,7 +116,7 @@ namespace RealifeGM.de.jojoa.mysql
             {
                 con = new MySqlConnection(conString);
                 cmd = con.CreateCommand();
-                cmd.CommandText = "CREATE TABLE IF NOT EXISTS BankData(Owner VARCHAR(100), Number int, money int, id int)";
+                cmd.CommandText = "CREATE TABLE IF NOT EXISTS BankData(Owner VARCHAR(100), Number int AUTO_INCREMENT, money int, PRIMARY KEY (Number))";
                 con.Open();
                 cmd.ExecuteNonQuery();
                 con.Close();
