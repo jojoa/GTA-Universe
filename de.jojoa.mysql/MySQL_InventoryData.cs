@@ -90,7 +90,7 @@ namespace RealifeGM.de.jojoa.mysql
             {
                 con = new MySqlConnection(conString);
                 cmd = con.CreateCommand();
-                cmd.CommandText = "CREATE TABLE IF NOT EXISTS InventoryData(Name VARCHAR(100),amount int, id int)";
+                cmd.CommandText = "CREATE TABLE IF NOT EXISTS InventoryData(Name VARCHAR(100),amount int, id int AUTO_INCREMENT, PRIMARY KEY (id))";
                 con.Open();
                 cmd.ExecuteNonQuery();
                 return true;
@@ -117,7 +117,7 @@ namespace RealifeGM.de.jojoa.mysql
 
             con = new MySqlConnection(conString);
             cmd = con.CreateCommand();
-            cmd.CommandText = "SELECT * FROM InventoryData";
+            cmd.CommandText = "SELECT * FROM InventoryData WHERE name!=@name";
             cmd.Parameters.AddWithValue("@name", "dummy");
             con.Open();
             reader = cmd.ExecuteReader();
