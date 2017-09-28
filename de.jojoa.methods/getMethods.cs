@@ -36,6 +36,7 @@ namespace RealifeGM.de.jojoa.methods
                     }
                 }
             }
+             return mysql.MySQL_POIData.GetID(i);
              }
         
         public static Account getAccountByClient(Client p)
