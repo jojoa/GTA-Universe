@@ -31,32 +31,34 @@ namespace RealifeGM.de.jojoa.mysql
                         + "UID=" + API.getSetting<string>("db_user") + ";" 
                         + "PASSWORD=" + API.getSetting<string>("db_pass") + ";";
         }
-
+        
         #region createAccount
         public static Bank_Account createAccount(Account owner)
         {
-            if (isTableCreated())
-            {
-                int price = 0;
-                int count = methods.getMethods.getBanksByUser(owner).Count;
-                price = getPrice(count);
-                con = new MySqlConnection(conString);
-                cmd = con.CreateCommand();
-                cmd.CommandText = "INSERT INTO BankData (money,Owner,price) VALUES (@money,@owner)";
-                con.Open();
-                cmd.Parameters.AddWithValue("@money", 0);
-                cmd.Parameters.AddWithValue("@owner", owner.p.name);
-                
-                cmd.ExecuteNonQuery();
-                Bank_Account ba = new Bank_Account(owner,Convert.ToInt16(cmd.LastInsertedId));
-                con.Close();
-                return ba;
-            }
-            return null;
+            if (!isTableCreated())
+                return null;
+
+            int count = methods.getMethods.getBanksByUser(owner).Count;
+          
+            con = new MySqlConnection(conString);
+            cmd = con.CreateCommand();
+            cmd.CommandText = "INSERT INTO BankData (money,Owner) VALUES (@money,@owner)";
+            con.Open();
+            cmd.Parameters.AddWithValue("@money", 0);
+            cmd.Parameters.AddWithValue("@owner", owner.p.name);
+            
+            cmd.ExecuteNonQuery();
+            Bank_Account ba = new Bank_Account(owner,Convert.ToInt16(cmd.LastInsertedId));
+            con.Close();
+            return ba;
         }
         #endregion createAccount
+
         public static void loadBanks()
         {
+            if (!isTableCreated())
+                return;
+
             con = new MySqlConnection(conString);
             cmd = con.CreateCommand();
             cmd.CommandText = "SELECT * FROM BankData";
@@ -66,67 +68,48 @@ namespace RealifeGM.de.jojoa.mysql
             {
                 
                 Account a = methods.getMethods.getAccountByName(reader.GetString("Owner"));
-                int number = reader.GetInt32("money");
+                int number = reader.GetInt32("number");
                 Bank_Account ba = new Bank_Account(a, number);
             }
             con.Close();
         }
 
-       public static void Save(Bank_Account ba)
+        public static void Save(Bank_Account ba)
         {
-            if (isTableCreated())
-            {
-                con = new MySqlConnection(conString);
-                cmd = con.CreateCommand();
-                cmd.CommandText = "UPDATE INTO BankData money=@money WHERE Owner=@owner";
-                con.Open();
-                cmd.Parameters.AddWithValue("@money", ba.money);
-                cmd.Parameters.AddWithValue("@owner", ba.owner.p.name);
-                cmd.ExecuteNonQuery();
-                con.Close();
-                
-            }
-          
-        }
+            if (!isTableCreated())
+                return;
 
-        private static int getPrice(int count)
-        {
-           if(count < 2)
-            {
-                return 0;
-            }else if(count < 5) {
-                return 5;
-            }
-           else if(count < 10)
-            {
-                return 10;
-            } else
-            {
-                return 20;
-            }
+            con = new MySqlConnection(conString);
+            cmd = con.CreateCommand();
+            cmd.CommandText = "UPDATE INTO BankData money=@money WHERE Owner=@owner";
+            con.Open();
+            cmd.Parameters.AddWithValue("@money", ba.money);
+            cmd.Parameters.AddWithValue("@owner", ba.owner.p.name);
+            cmd.ExecuteNonQuery();
+            con.Close();
         }
-
+     
         public static int getInt(int banknumber, string get)
         {
-            if (isTableCreated())
-            {
-                con = new MySqlConnection(conString);
-                cmd = con.CreateCommand();
-                cmd.CommandText = "SELECT * FROM BankData WHERE Number=@nr";
-                cmd.Parameters.AddWithValue("@number", banknumber);
-                con.Open();
-                reader = cmd.ExecuteReader();
+            if (!isTableCreated())
+                return 0;
 
-                while (reader.Read())
-                {
-                    int getted = reader.GetInt16(get);
-                    reader.Close();
-                    con.Close();
-                    return getted;
-                }
+            con = new MySqlConnection(conString);
+            cmd = con.CreateCommand();
+            cmd.CommandText = "SELECT * FROM BankData WHERE Number=@nr";
+            cmd.Parameters.AddWithValue("@number", banknumber);
+            con.Open();
+            reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                int getted = reader.GetInt16(get);
                 reader.Close();
                 con.Close();
+                return getted;
             }
+            reader.Close();
+            con.Close();
             return 0;
         }
 
@@ -136,7 +119,7 @@ namespace RealifeGM.de.jojoa.mysql
             {
                 con = new MySqlConnection(conString);
                 cmd = con.CreateCommand();
-                cmd.CommandText = "CREATE TABLE IF NOT EXISTS BankData(Owner VARCHAR(100), Number int, money int, id int)";
+                cmd.CommandText = "CREATE TABLE IF NOT EXISTS BankData(Owner VARCHAR(100), Number int AUTO_INCREMENT, money int, PRIMARY KEY (Number))";
                 con.Open();
                 cmd.ExecuteNonQuery();
                 con.Close();

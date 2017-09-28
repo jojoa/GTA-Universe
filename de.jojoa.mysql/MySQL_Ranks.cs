@@ -35,120 +35,116 @@ namespace RealifeGM.de.jojoa.mysql
         #region registerPlayer
         public static void registerPlayer(Account name)
         {
-            if (isTableCreated())
-            {
-                con = new MySqlConnection(conString);
-                cmd = con.CreateCommand();
-                cmd.CommandText = "INSERT INTO RankData (Name, createprop, removeprop, god, fly , kick, pos,id,createShop,createBank,spawncar,givemoney) VALUES (@name,@cp,@rp,@god,@fly,@kick,@pos,@id,@cs,@cb,@sc,@gm)";
-                con.Open();
-                cmd.Parameters.AddWithValue("@name", name.name);
-                cmd.Parameters.AddWithValue("@cp", 0);
-                cmd.Parameters.AddWithValue("@rp", 0);
-                cmd.Parameters.AddWithValue("@god", 0);
-                cmd.Parameters.AddWithValue("@fly", 0);
-                cmd.Parameters.AddWithValue("@kick", 0);
-                cmd.Parameters.AddWithValue("@pos", 0);
-                cmd.Parameters.AddWithValue("@cs", 0);
-                cmd.Parameters.AddWithValue("@cb", 0);
-                cmd.Parameters.AddWithValue("@sc", 0);
-                cmd.Parameters.AddWithValue("@gm", 0);
-                cmd.Parameters.AddWithValue("@id", name.id);
-                cmd.ExecuteNonQuery();
-                con.Close();
+            if (!isTableCreated())
+                return;
 
-            }
-
+            con = new MySqlConnection(conString);
+            cmd = con.CreateCommand();
+            cmd.CommandText = "INSERT INTO RankData (Name, createprop, removeprop, god, fly , kick, pos,id,createShop,createBank,spawncar,givemoney) VALUES (@name,@cp,@rp,@god,@fly,@kick,@pos,@id,@cs,@cb,@sc,@gm)";
+            con.Open();
+            cmd.Parameters.AddWithValue("@name", name.name);
+            cmd.Parameters.AddWithValue("@cp", 0);
+            cmd.Parameters.AddWithValue("@rp", 0);
+            cmd.Parameters.AddWithValue("@god", 0);
+            cmd.Parameters.AddWithValue("@fly", 0);
+            cmd.Parameters.AddWithValue("@kick", 0);
+            cmd.Parameters.AddWithValue("@pos", 0);
+            cmd.Parameters.AddWithValue("@cs", 0);
+            cmd.Parameters.AddWithValue("@cb", 0);
+            cmd.Parameters.AddWithValue("@sc", 0);
+            cmd.Parameters.AddWithValue("@gm", 0);
+            cmd.Parameters.AddWithValue("@id", name.id);
+            cmd.ExecuteNonQuery();
+            con.Close();
         }
         #endregion registerPlayer
-
-      
 
         #region get
         public static String getString(Client p, string get)
         {
-            if (isTableCreated())
-            {
-                con = new MySqlConnection(conString);
-                cmd = con.CreateCommand();
-                cmd.CommandText = "SELECT * FROM RankData WHERE Name=@name";
-                cmd.Parameters.AddWithValue("@name", p.name);
-                con.Open();
-                reader = cmd.ExecuteReader();
+            if (!isTableCreated())
+                return null;
 
-                while (reader.Read())
-                {
-                    string getted = reader.GetString(get);
-                    return getted;
-                }
-                reader.Close();
-                con.Close();
+            con = new MySqlConnection(conString);
+            cmd = con.CreateCommand();
+            cmd.CommandText = "SELECT * FROM RankData WHERE Name=@name";
+            cmd.Parameters.AddWithValue("@name", p.name);
+            con.Open();
+            reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                string getted = reader.GetString(get);
+                return getted;
             }
+            reader.Close();
+            con.Close();
             return null;
         }
 
         public static String getStringByName(string name, string get)
         {
-            if (isTableCreated())
-            {
-                con = new MySqlConnection(conString);
-                cmd = con.CreateCommand();
-                cmd.CommandText = "SELECT * FROM RankData WHERE Name=@name";
-                cmd.Parameters.AddWithValue("@name", name);
-                con.Open();
-                reader = cmd.ExecuteReader();
+           if (!isTableCreated())
+                return null;
 
-                while (reader.Read())
-                {
-                    string getted = reader.GetString(get);
-                    return getted;
-                }
-                reader.Close();
-                con.Close();
+            con = new MySqlConnection(conString);
+            cmd = con.CreateCommand();
+            cmd.CommandText = "SELECT * FROM RankData WHERE Name=@name";
+            cmd.Parameters.AddWithValue("@name", name);
+            con.Open();
+            reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                string getted = reader.GetString(get);
+                return getted;
             }
+            reader.Close();
+            con.Close();
             return null;
         }
 
         public static int getInt(Client p, string get)
         {
-            if (isTableCreated())
-            {
-                con = new MySqlConnection(conString);
-                cmd = con.CreateCommand();
-                cmd.CommandText = "SELECT * FROM RankData WHERE Name=@name";
-                cmd.Parameters.AddWithValue("@name", p.name);
-                con.Open();
-                reader = cmd.ExecuteReader();
+            if (!isTableCreated())
+                return 0;
 
-                while (reader.Read())
-                {
-                    int getted = reader.GetInt16(get);
-                    return getted;
-                }
-                reader.Close();
-                con.Close();
+            con = new MySqlConnection(conString);
+            cmd = con.CreateCommand();
+            cmd.CommandText = "SELECT * FROM RankData WHERE Name=@name";
+            cmd.Parameters.AddWithValue("@name", p.name);
+            con.Open();
+            reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                int getted = reader.GetInt16(get);
+                return getted;
             }
+            reader.Close();
+            con.Close();
             return 0;
         }
 
         public static int getIntByName(string name, string get)
         {
-            if (isTableCreated())
-            {
-                con = new MySqlConnection(conString);
-                cmd = con.CreateCommand();
-                cmd.CommandText = "SELECT * FROM RankData WHERE Name=@name";
-                cmd.Parameters.AddWithValue("@name", name);
-                con.Open();
-                reader = cmd.ExecuteReader();
+            if (!isTableCreated())
+                return 0;
 
-                while (reader.Read())
-                {
-                    int getted = reader.GetInt16(get);
-                    return getted;
-                }
-                reader.Close();
-                con.Close();
+            con = new MySqlConnection(conString);
+            cmd = con.CreateCommand();
+            cmd.CommandText = "SELECT * FROM RankData WHERE Name=@name";
+            cmd.Parameters.AddWithValue("@name", name);
+            con.Open();
+            reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                int getted = reader.GetInt16(get);
+                return getted;
             }
+            reader.Close();
+            con.Close();
             return 0;
         }
         #endregion get
@@ -156,18 +152,17 @@ namespace RealifeGM.de.jojoa.mysql
         #region set
         public static void set(Client p, string set, string whattoset)
         {
-            if (isTableCreated())
-            {
-                con = new MySqlConnection(conString);
-                cmd = con.CreateCommand();
-                cmd.CommandText = "UPDATE RankData SET " + set + "=@whattoset WHERE Name=@name";
-                cmd.Parameters.AddWithValue("@whattoset", whattoset);
-                cmd.Parameters.AddWithValue("@name", p.name);
-                con.Open();
-                cmd.ExecuteNonQuery();
-                con.Close();
-            }
+            if (!isTableCreated())
+                return;
 
+            con = new MySqlConnection(conString);
+            cmd = con.CreateCommand();
+            cmd.CommandText = "UPDATE RankData SET " + set + "=@whattoset WHERE Name=@name";
+            cmd.Parameters.AddWithValue("@whattoset", whattoset);
+            cmd.Parameters.AddWithValue("@name", p.name);
+            con.Open();
+            cmd.ExecuteNonQuery();
+            con.Close();
         }
         #endregion set
 
@@ -178,7 +173,7 @@ namespace RealifeGM.de.jojoa.mysql
             {
                 con = new MySqlConnection(conString);
                 cmd = con.CreateCommand();
-                cmd.CommandText = "CREATE TABLE IF NOT EXISTS RankData(Name VARCHAR(100),id int,createprop tinyint,removeprop tinyint,fly tinyint,god tinyint,kick tinyint,pos tinyint ,createShop tinyint, createBank tinyint, spawncar tinyint, givemoney tinyint)";
+                cmd.CommandText = "CREATE TABLE IF NOT EXISTS RankData(Name VARCHAR(100),id int AUTO_INCREMENT,createprop tinyint,removeprop tinyint,fly tinyint,god tinyint,kick tinyint,pos tinyint ,createShop tinyint, createBank tinyint, spawncar tinyint, givemoney tinyint, PRIMARY KEY(id))";
                 con.Open();
                 cmd.ExecuteNonQuery();
                 return true;
@@ -189,10 +184,11 @@ namespace RealifeGM.de.jojoa.mysql
             }
         }
 
-        
-
         public static Dictionary<string,Boolean> getRank(string user)
         {
+            if (!isTableCreated())
+                return null;
+
             con = new MySqlConnection(conString);
             cmd = con.CreateCommand();
             cmd.CommandText = "SELECT * FROM RankData WHERE Name=@name";
@@ -225,6 +221,5 @@ namespace RealifeGM.de.jojoa.mysql
             return null;
         }
         #endregion othermethods
-
     }
 }

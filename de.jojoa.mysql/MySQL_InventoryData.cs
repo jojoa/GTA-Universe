@@ -36,6 +36,9 @@ namespace RealifeGM.de.jojoa.mysql
 
         public static Inventory createInv()
         {
+            if (!isTableCreated())
+                return null;
+
             int lastid = getLastID();
             con = new MySqlConnection(conString);
             cmd = con.CreateCommand();
@@ -49,11 +52,13 @@ namespace RealifeGM.de.jojoa.mysql
             con.Close();
 
             return inv;
-
         }
 
         public static int getLastID()
         {
+            if (!isTableCreated())
+                return 0;
+
             int i = 0;
             con = new MySqlConnection(conString);
             cmd = con.CreateCommand();
@@ -74,6 +79,9 @@ namespace RealifeGM.de.jojoa.mysql
 
         public static void Update(Inventory inv)
         {
+            if (!isTableCreated())
+                return;
+
             con = new MySqlConnection(conString);
             cmd = con.CreateCommand();
             cmd.CommandText = "DELETE FROM InventoryData WHERE id=@id";
@@ -103,7 +111,7 @@ namespace RealifeGM.de.jojoa.mysql
             {
                 con = new MySqlConnection(conString);
                 cmd = con.CreateCommand();
-                cmd.CommandText = "CREATE TABLE IF NOT EXISTS InventoryData(Name VARCHAR(100),amount int, id int)";
+                cmd.CommandText = "CREATE TABLE IF NOT EXISTS InventoryData(Name VARCHAR(100),amount int, id int AUTO_INCREMENT, PRIMARY KEY (id))";
                 con.Open();
                 cmd.ExecuteNonQuery();
                 return true;
@@ -116,6 +124,9 @@ namespace RealifeGM.de.jojoa.mysql
 
         public static void loadInvs()
         {
+            if (!isTableCreated())
+                return;
+                
             con = new MySqlConnection(conString);
             cmd = con.CreateCommand();
             cmd.CommandText = "SELECT * FROM InventoryData WHERE name=@name";
@@ -130,7 +141,7 @@ namespace RealifeGM.de.jojoa.mysql
 
             con = new MySqlConnection(conString);
             cmd = con.CreateCommand();
-            cmd.CommandText = "SELECT * FROM InventoryData";
+            cmd.CommandText = "SELECT * FROM InventoryData WHERE name!=@name";
             cmd.Parameters.AddWithValue("@name", "dummy");
             con.Open();
             reader = cmd.ExecuteReader();
