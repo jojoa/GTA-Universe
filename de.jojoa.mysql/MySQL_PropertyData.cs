@@ -60,7 +60,7 @@ namespace RealifeGM.de.jojoa.mysql
            
             con = new MySqlConnection(conString);
             cmd = con.CreateCommand();
-            cmd.CommandText = "INSERT INTO PropertyData (Type,Price,Owner,Street,Zone,PosX,PosY,PosZ,invid) VALUES (@type,@price,@owner,@street,@zone,@x,@y,@z,@inv)";
+            cmd.CommandText = "INSERT INTO PropertyData (Type,Price,Owner,street,zone,PosX,PosY,PosZ,invid) VALUES (@type,@price,@owner,@street,@zone,@x,@y,@z,@inv)";
             cmd.Parameters.AddWithValue("@type", prop.type);
             cmd.Parameters.AddWithValue("@price", prop.price);
             cmd.Parameters.AddWithValue("@owner", prop.owner.p.name);
@@ -96,7 +96,7 @@ namespace RealifeGM.de.jojoa.mysql
             {
                 int type = reader.GetInt16("Type");
 
-                string id = reader.GetString("id");
+                string id = reader.GetString("ID");
                 int price = reader.GetInt16("Price");
                 string owner = reader.GetString("Owner");
                 double posX = reader.GetDouble("posX");
@@ -107,7 +107,7 @@ namespace RealifeGM.de.jojoa.mysql
                 Property prop = new Property(pos, price, type,invid);
                 prop.ID = id;
                 
-                prop.owner = methods.getMethods.getAccountByName(reader.GetString("owner"));
+                prop.owner = methods.getMethods.getAccountByName(reader.GetString("Owner"));
                 prop.street = reader.GetString("street");
                 prop.zone = reader.GetString("zone");
                 prop.getTypeName();
@@ -129,9 +129,9 @@ namespace RealifeGM.de.jojoa.mysql
             reader = cmd.ExecuteReader();
             while(reader.Read())
             {
-                Property prop = new Property(new Vector3(reader.GetInt16("PosX"), reader.GetInt16("PosY"), reader.GetInt16("PosZ")), reader.GetInt16("price"), reader.GetInt16("type"),reader.GetInt32("invid"));
-                prop.owner.p.name = reader.GetString("owner");
-                prop.ID = reader.GetString("id");
+                Property prop = new Property(new Vector3(reader.GetInt16("PosX"), reader.GetInt16("PosY"), reader.GetInt16("PosZ")), reader.GetInt16("Price"), reader.GetInt16("Type"),reader.GetInt32("invid"));
+                prop.owner.p.name = reader.GetString("Owner");
+                prop.ID = reader.GetString("ID");
                 prop.street = reader.GetString("street");
                 prop.zone = reader.GetString("zone");
                 lprop.Add(prop);
@@ -143,7 +143,7 @@ namespace RealifeGM.de.jojoa.mysql
         {
             con = new MySqlConnection(conString);
             cmd = con.CreateCommand();
-            cmd.CommandText = "DELETE FROM PropertyData WHERE id=@id";
+            cmd.CommandText = "DELETE FROM PropertyData WHERE ID=@id";
             cmd.Parameters.AddWithValue("@id", p.ID);
             con.Open();
             cmd.ExecuteNonQuery();
@@ -171,7 +171,7 @@ namespace RealifeGM.de.jojoa.mysql
             {
                 con = new MySqlConnection(conString);
                 cmd = con.CreateCommand();
-                cmd.CommandText = "CREATE TABLE IF NOT EXISTS PropertyData(Type int ,Price int ,Owner VARCHAR(100) ,Street VARCHAR(100),Zone VARCHAR(100) ,PosX float,PosY float ,PosZ float ,invid int)";
+                cmd.CommandText = "CREATE TABLE IF NOT EXISTS PropertyData(Type int ,Price int ,Owner VARCHAR(100) ,street VARCHAR(100),zone VARCHAR(100) ,PosX float,PosY float ,PosZ float ,invid int,ID int AUTO_INCREMENT, PRIMARY KEY (ID))";
                 con.Open();
                 cmd.ExecuteNonQuery();
                 return true;
