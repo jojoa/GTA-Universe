@@ -20,7 +20,7 @@ namespace RealifeGM.de.jojoa.methods
 
         }
         
-         public static int getShopByPos(Vector3 pos)
+        public static int getShopByPos(Vector3 pos)
         {
             Vector3 i = null;
             float d = 100;
@@ -36,8 +36,9 @@ namespace RealifeGM.de.jojoa.methods
                     }
                 }
             }
-             return mysql.MySQL_POIData.GetID(i);
-             }
+
+            return mysql.MySQL_POIData.getID(i);
+        }
         
         public static Account getAccountByClient(Client p)
         {

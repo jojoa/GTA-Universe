@@ -31,9 +31,9 @@ namespace RealifeGM.de.jojoa.mysql
             con = new MySqlConnection(conString);
             cmd = con.CreateCommand();
             cmd.CommandText = "SELECT * FROM POIData WHERE X=@x AND Y=@y AND Z=@z";
-            cmd.Parameters.AddWithValue(@x, pos.X);
-             cmd.Parameters.AddWithValue(@y, pos.Y);
-              cmd.Parameters.AddWithValue(@z, pos.Z);
+            cmd.Parameters.AddWithValue("@x", pos.X);
+            cmd.Parameters.AddWithValue("@y", pos.Y);
+            cmd.Parameters.AddWithValue("@z", pos.Z);
             con.Open();
             reader = cmd.ExecuteReader();
           
