@@ -257,7 +257,7 @@ namespace RealifeGM.de.jojoa.mysql
 
             con = new MySqlConnection(conString);
             cmd = con.CreateCommand();
-            cmd.CommandText = "UPDATE ShopData (SPX,SPY,SPZ,RTX,RTY,RTZ) VALUES (@spx,@spy,@spz,@rtx,@rty,@rtz) WHERE id=@id";
+            cmd.CommandText = "UPDATE ShopData SET (SPX,SPY,SPZ,RTX,RTY,RTZ) VALUES (@spx,@spy,@spz,@rtx,@rty,@rtz) WHERE id=@id";
             cmd.Parameters.AddWithValue("@spx", pos.X);
             cmd.Parameters.AddWithValue("@spy", pos.Y);
             cmd.Parameters.AddWithValue("@spz", pos.Z);
