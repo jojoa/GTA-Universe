@@ -11,7 +11,7 @@ namespace RealifeGM.de.jojoa.data
 {
     class Account
     {
-        public Dictionary<string, Boolean> rank = new Dictionary<string, Boolean>();
+        public Dictionary<string, Boo> rank = new Dictionary<string, Boolean>();
         public string spawn;
         public int id;
         public Client p;
