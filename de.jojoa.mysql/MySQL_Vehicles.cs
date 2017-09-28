@@ -63,7 +63,7 @@ namespace RealifeGM.de.jojoa.mysql
             {
                 con = new MySqlConnection(conString);
                 cmd = con.CreateCommand();
-                cmd.CommandText = "CREATE TABLE IF NOT EXISTS VehicleData (Name VARCHAR(100),model VARCHAR(100), color1 int,color2 int, spawnX double , spawnY double , spawnZ double,spawnRX double , spawnRY double , spawnRZ double, invid int, id int AUTO_INCREMENT)";
+                cmd.CommandText = "CREATE TABLE IF NOT EXISTS VehicleData (Name VARCHAR(100),model VARCHAR(100), color1 int,color2 int, spawnX double , spawnY double , spawnZ double,spawnRX double , spawnRY double , spawnRZ double, invid int, id int AUTO_INCREMENT, PRIMARY KEY (id))";
                 con.Open();
                 cmd.ExecuteNonQuery();
                 return true;
