@@ -49,7 +49,7 @@ namespace RealifeGM.de.jojoa.mysql
         {
             con = new MySqlConnection(conString);
             cmd = con.CreateCommand();
-            cmd.CommandText = "SELECT * FROM POIData WHERE Type=@type;
+            cmd.CommandText = "SELECT * FROM POIData WHERE Type=@type";
             cmd.Parameters.AddWithValue("@type", "Bank");
             con.Open();
             reader = cmd.ExecuteReader();
