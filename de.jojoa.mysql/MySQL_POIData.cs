@@ -24,6 +24,27 @@ namespace RealifeGM.de.jojoa.mysql
         {
             
         }
+        
+        
+        public static int getID(Vector3 pos)
+        {
+            con = new MySqlConnection(conString);
+            cmd = con.CreateCommand();
+            cmd.CommandText = "SELECT * FROM POIData WHERE X=@x AND Y=@y AND Z=@z";
+            cmd.Parameters.AddWithValue(@x, pos.X);
+             cmd.Parameters.AddWithValue(@y, pos.Y);
+              cmd.Parameters.AddWithValue(@z, pos.Z);
+            con.Open();
+            reader = cmd.ExecuteReader();
+          
+            while (reader.Read())
+            {
+                return reader.GetInt32("id");
+                
+
+            }
+            return 0;
+        }
 
         public static void loadPOI()
         {
