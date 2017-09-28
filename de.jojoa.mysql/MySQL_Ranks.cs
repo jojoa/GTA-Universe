@@ -164,7 +164,7 @@ namespace RealifeGM.de.jojoa.mysql
             {
                 con = new MySqlConnection(conString);
                 cmd = con.CreateCommand();
-                cmd.CommandText = "CREATE TABLE IF NOT EXISTS RankData(Name VARCHAR(100),id int,createprop tinyint,removeprop tinyint,fly tinyint,god tinyint,kick tinyint,pos tinyint ,createShop tinyint, createBank tinyint, spawncar tinyint, givemoney tinyint)";
+                cmd.CommandText = "CREATE TABLE IF NOT EXISTS RankData(Name VARCHAR(100),id int AUTO_INCREMENT,createprop tinyint,removeprop tinyint,fly tinyint,god tinyint,kick tinyint,pos tinyint ,createShop tinyint, createBank tinyint, spawncar tinyint, givemoney tinyint, PRIMARY KEY(id))";
                 con.Open();
                 cmd.ExecuteNonQuery();
                 return true;
