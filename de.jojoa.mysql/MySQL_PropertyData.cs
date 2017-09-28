@@ -28,6 +28,9 @@ namespace RealifeGM.de.jojoa.mysql
 
         private void API_onClientEventTrigger(Client p, string eventName, params object[] arguments)
         {
+            if (!isTableCreated())
+                return;
+
             switch(eventName)
             {
                 case "getLoc_rt":
@@ -52,12 +55,13 @@ namespace RealifeGM.de.jojoa.mysql
         {
             isTableCreated();
         }
-
         
         #region methods
         public static void saveProperty(Property prop)
         {
-           
+           if (!isTableCreated())
+                return;
+
             con = new MySqlConnection(conString);
             cmd = con.CreateCommand();
             cmd.CommandText = "INSERT INTO PropertyData (Type,Price,Owner,street,zone,PosX,PosY,PosZ,invid) VALUES (@type,@price,@owner,@street,@zone,@x,@y,@z,@inv)";
@@ -77,15 +81,13 @@ namespace RealifeGM.de.jojoa.mysql
             long i = cmd.LastInsertedId;
             prop.ID = i.ToString();
             con.Close();
-           
-
-            
-
-            
         }
 
         public static void loadProps()
         {
+            if (!isTableCreated())
+                return;
+
             con = new MySqlConnection(conString);
             cmd = con.CreateCommand();
             cmd.CommandText = "SELECT * FROM PropertyData";
@@ -121,6 +123,9 @@ namespace RealifeGM.de.jojoa.mysql
 
         public static List<Property> getAll()
         {
+            if (!isTableCreated())
+                return null;
+
             List<Property> lprop = new List<Property>();
             con = new MySqlConnection(conString);
             cmd = con.CreateCommand();
@@ -141,6 +146,9 @@ namespace RealifeGM.de.jojoa.mysql
 
         public static void RemoveProp(Property p)
         {
+            if (!isTableCreated())
+                return;
+
             con = new MySqlConnection(conString);
             cmd = con.CreateCommand();
             cmd.CommandText = "DELETE FROM PropertyData WHERE ID=@id";
@@ -149,8 +157,12 @@ namespace RealifeGM.de.jojoa.mysql
             cmd.ExecuteNonQuery();
         }
         #endregion methods
+
         public static String getString(Property p, string whattoget)
         {
+            if (!isTableCreated())
+                return null;
+
             con = new MySqlConnection(conString);
             cmd = con.CreateCommand();
             cmd.CommandText = "SELECT " + whattoget + " FROM PropertyData WHERE ID=@id";

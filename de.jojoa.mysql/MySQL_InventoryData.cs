@@ -23,6 +23,9 @@ namespace RealifeGM.de.jojoa.mysql
 
         public static Inventory createInv()
         {
+            if (!isTableCreated())
+                return null;
+
             int lastid = getLastID();
             con = new MySqlConnection(conString);
             cmd = con.CreateCommand();
@@ -36,11 +39,13 @@ namespace RealifeGM.de.jojoa.mysql
             con.Close();
 
             return inv;
-
         }
 
         public static int getLastID()
         {
+            if (!isTableCreated())
+                return 0;
+
             int i = 0;
             con = new MySqlConnection(conString);
             cmd = con.CreateCommand();
@@ -61,6 +66,9 @@ namespace RealifeGM.de.jojoa.mysql
 
         public static void Update(Inventory inv)
         {
+            if (!isTableCreated())
+                return;
+
             con = new MySqlConnection(conString);
             cmd = con.CreateCommand();
             cmd.CommandText = "DELETE FROM InventoryData WHERE id=@id";
@@ -103,6 +111,9 @@ namespace RealifeGM.de.jojoa.mysql
 
         public static void loadInvs()
         {
+            if (!isTableCreated())
+                return;
+                
             con = new MySqlConnection(conString);
             cmd = con.CreateCommand();
             cmd.CommandText = "SELECT * FROM InventoryData WHERE name=@name";

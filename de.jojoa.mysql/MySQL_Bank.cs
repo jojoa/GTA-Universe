@@ -28,31 +28,34 @@ namespace RealifeGM.de.jojoa.mysql
         {
             
         }
+        
         #region createAccount
         public static Bank_Account createAccount(Account owner)
         {
-            if (isTableCreated())
-            {
-               
-                int count = methods.getMethods.getBanksByUser(owner).Count;
-              
-                con = new MySqlConnection(conString);
-                cmd = con.CreateCommand();
-                cmd.CommandText = "INSERT INTO BankData (money,Owner) VALUES (@money,@owner)";
-                con.Open();
-                cmd.Parameters.AddWithValue("@money", 0);
-                cmd.Parameters.AddWithValue("@owner", owner.p.name);
-                
-                cmd.ExecuteNonQuery();
-                Bank_Account ba = new Bank_Account(owner,Convert.ToInt16(cmd.LastInsertedId));
-                con.Close();
-                return ba;
-            }
-            return null;
+            if (!isTableCreated())
+                return null;
+
+            int count = methods.getMethods.getBanksByUser(owner).Count;
+          
+            con = new MySqlConnection(conString);
+            cmd = con.CreateCommand();
+            cmd.CommandText = "INSERT INTO BankData (money,Owner) VALUES (@money,@owner)";
+            con.Open();
+            cmd.Parameters.AddWithValue("@money", 0);
+            cmd.Parameters.AddWithValue("@owner", owner.p.name);
+            
+            cmd.ExecuteNonQuery();
+            Bank_Account ba = new Bank_Account(owner,Convert.ToInt16(cmd.LastInsertedId));
+            con.Close();
+            return ba;
         }
         #endregion createAccount
+
         public static void loadBanks()
         {
+            if (!isTableCreated())
+                return;
+
             con = new MySqlConnection(conString);
             cmd = con.CreateCommand();
             cmd.CommandText = "SELECT * FROM BankData";
@@ -68,45 +71,42 @@ namespace RealifeGM.de.jojoa.mysql
             con.Close();
         }
 
-       public static void Save(Bank_Account ba)
+        public static void Save(Bank_Account ba)
         {
-            if (isTableCreated())
-            {
-                con = new MySqlConnection(conString);
-                cmd = con.CreateCommand();
-                cmd.CommandText = "UPDATE INTO BankData money=@money WHERE Owner=@owner";
-                con.Open();
-                cmd.Parameters.AddWithValue("@money", ba.money);
-                cmd.Parameters.AddWithValue("@owner", ba.owner.p.name);
-                cmd.ExecuteNonQuery();
-                con.Close();
-                
-            }
-          
-        }
+            if (!isTableCreated())
+                return;
 
+            con = new MySqlConnection(conString);
+            cmd = con.CreateCommand();
+            cmd.CommandText = "UPDATE INTO BankData money=@money WHERE Owner=@owner";
+            con.Open();
+            cmd.Parameters.AddWithValue("@money", ba.money);
+            cmd.Parameters.AddWithValue("@owner", ba.owner.p.name);
+            cmd.ExecuteNonQuery();
+            con.Close();
+        }
      
         public static int getInt(int banknumber, string get)
         {
-            if (isTableCreated())
-            {
-                con = new MySqlConnection(conString);
-                cmd = con.CreateCommand();
-                cmd.CommandText = "SELECT * FROM BankData WHERE Number=@nr";
-                cmd.Parameters.AddWithValue("@number", banknumber);
-                con.Open();
-                reader = cmd.ExecuteReader();
+            if (!isTableCreated())
+                return 0;
 
-                while (reader.Read())
-                {
-                    int getted = reader.GetInt16(get);
-                    reader.Close();
-                    con.Close();
-                    return getted;
-                }
+            con = new MySqlConnection(conString);
+            cmd = con.CreateCommand();
+            cmd.CommandText = "SELECT * FROM BankData WHERE Number=@nr";
+            cmd.Parameters.AddWithValue("@number", banknumber);
+            con.Open();
+            reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                int getted = reader.GetInt16(get);
                 reader.Close();
                 con.Close();
+                return getted;
             }
+            reader.Close();
+            con.Close();
             return 0;
         }
 

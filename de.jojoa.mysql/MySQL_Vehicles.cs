@@ -23,38 +23,36 @@ namespace RealifeGM.de.jojoa.mysql
         #endregion variables
         public static VehicleD createVehicle(Account owner,string model,Vector3 pos,Vector3 rot)
         {
-            if (isTableCreated())
-            {
+            if (!isTableCreated())
+                return null;
+
             Inventory vhc = MySQL_InventoryData.createInv();
-                con = new MySqlConnection(conString);
-                cmd = con.CreateCommand();
-                cmd.CommandText = "INSERT INTO VehicleData (Name,model,color1,color2,spawnX,spawnY,spawnZ,spawnRX,spawnRY,spawnRZ,invid) VALUES (@name,@model,@color1,@color2,@spawnX,@spawnY,@spawnZ,@spawnRX,@spawnRY,@spawnRZ,@invid)";
-                con.Open();
-                cmd.Parameters.AddWithValue("@name", owner.name);
-                cmd.Parameters.AddWithValue("@model", model);
-                cmd.Parameters.AddWithValue("@color1", 4);
-                cmd.Parameters.AddWithValue("@color2", 12);
-                cmd.Parameters.AddWithValue("@spawnX", pos.X);
-                cmd.Parameters.AddWithValue("@spawnY", pos.Y);
-                cmd.Parameters.AddWithValue("@spawnZ", pos.Z);
+            con = new MySqlConnection(conString);
+            cmd = con.CreateCommand();
+            cmd.CommandText = "INSERT INTO VehicleData (Name,model,color1,color2,spawnX,spawnY,spawnZ,spawnRX,spawnRY,spawnRZ,invid) VALUES (@name,@model,@color1,@color2,@spawnX,@spawnY,@spawnZ,@spawnRX,@spawnRY,@spawnRZ,@invid)";
+            con.Open();
+            cmd.Parameters.AddWithValue("@name", owner.name);
+            cmd.Parameters.AddWithValue("@model", model);
+            cmd.Parameters.AddWithValue("@color1", 4);
+            cmd.Parameters.AddWithValue("@color2", 12);
+            cmd.Parameters.AddWithValue("@spawnX", pos.X);
+            cmd.Parameters.AddWithValue("@spawnY", pos.Y);
+            cmd.Parameters.AddWithValue("@spawnZ", pos.Z);
 
-                cmd.Parameters.AddWithValue("@spawnRX", rot.X);
-                cmd.Parameters.AddWithValue("@spawnRY", rot.Y);
-                cmd.Parameters.AddWithValue("@spawnRZ", rot.Z);
-                
-                cmd.Parameters.AddWithValue("@invid", vhc.id);
-                VehicleHash vh = API.shared.vehicleNameToModel(model);
+            cmd.Parameters.AddWithValue("@spawnRX", rot.X);
+            cmd.Parameters.AddWithValue("@spawnRY", rot.Y);
+            cmd.Parameters.AddWithValue("@spawnRZ", rot.Z);
+            
+            cmd.Parameters.AddWithValue("@invid", vhc.id);
+            VehicleHash vh = API.shared.vehicleNameToModel(model);
 
-                Vehicle v = API.shared.createVehicle(vh, pos, rot, 4, 12);
-                v.numberPlate = "LS" + cmd.LastInsertedId.ToString("D4");
-                VehicleD vd = new VehicleD(v, owner, cmd.LastInsertedId.ToString(),vhc.id);
-               
-                cmd.ExecuteNonQuery();
-                con.Close();
-                return vd;
-
-            }
-            return null;
+            Vehicle v = API.shared.createVehicle(vh, pos, rot, 4, 12);
+            v.numberPlate = "LS" + cmd.LastInsertedId.ToString("D4");
+            VehicleD vd = new VehicleD(v, owner, cmd.LastInsertedId.ToString(),vhc.id);
+           
+            cmd.ExecuteNonQuery();
+            con.Close();
+            return vd;
         }
 
         public static Boolean isTableCreated()
@@ -76,49 +74,49 @@ namespace RealifeGM.de.jojoa.mysql
 
         public static void setSpawn(VehicleD vd)
         {
-            if (isTableCreated())
-            {
-                con = new MySqlConnection(conString);
-                cmd = con.CreateCommand();
-                cmd.CommandText = "UPDATE VehicleData SET (spawnX, spawnY, spawnZ,spawnRX,spawnRY,spawnRZ) VALUES (@x,@y,@z,@rx,@ry,@rz) WHERE id=@id";
-                cmd.Parameters.AddWithValue("@x", vd.v.position.X);
-                cmd.Parameters.AddWithValue("@y", vd.v.position.Y);
-                cmd.Parameters.AddWithValue("@z", vd.v.position.Z);
-                cmd.Parameters.AddWithValue("@rx", vd.v.rotation.X);
-                cmd.Parameters.AddWithValue("@ry", vd.v.rotation.Y);
-                cmd.Parameters.AddWithValue("@rz", vd.v.rotation.Z);
-                cmd.Parameters.AddWithValue("@id", vd.id);
-                con.Open();
-                cmd.ExecuteNonQuery();
-                con.Close();
-            }
+            if (!isTableCreated())
+                return;
+
+            con = new MySqlConnection(conString);
+            cmd = con.CreateCommand();
+            cmd.CommandText = "UPDATE VehicleData SET (spawnX, spawnY, spawnZ,spawnRX,spawnRY,spawnRZ) VALUES (@x,@y,@z,@rx,@ry,@rz) WHERE id=@id";
+            cmd.Parameters.AddWithValue("@x", vd.v.position.X);
+            cmd.Parameters.AddWithValue("@y", vd.v.position.Y);
+            cmd.Parameters.AddWithValue("@z", vd.v.position.Z);
+            cmd.Parameters.AddWithValue("@rx", vd.v.rotation.X);
+            cmd.Parameters.AddWithValue("@ry", vd.v.rotation.Y);
+            cmd.Parameters.AddWithValue("@rz", vd.v.rotation.Z);
+            cmd.Parameters.AddWithValue("@id", vd.id);
+            con.Open();
+            cmd.ExecuteNonQuery();
+            con.Close();
         }
 
         public static void loadVehicles()
         {
-            if (isTableCreated())
-            {
-                con = new MySqlConnection(conString);
-                cmd = con.CreateCommand();
-                cmd.CommandText = "SELECT * FROM VehicleData";
-                
-                con.Open();
-                reader = cmd.ExecuteReader();
-                while(reader.Read()) {
-                    int id = reader.GetInt32("id");
-                    int vid = reader.GetInt32("invid");
-                    VehicleHash model = API.shared.vehicleNameToModel(reader.GetString("model"));
-                    Vector3 pos = new Vector3(reader.GetDouble("spawnX"), reader.GetDouble("spawnY"), reader.GetDouble("spawnZ"));
-                    Vector3 rot = new Vector3(reader.GetDouble("spawnRX"), reader.GetDouble("spawnRY"), reader.GetDouble("spawnRZ"));
-                    Account owner = methods.getMethods.getAccountByName(reader.GetString("Name"));
-                    int color1 = reader.GetInt32("color1");
-                    int color2 = reader.GetInt32("color2");
-                    Vehicle v = API.shared.createVehicle(model, pos, rot, color1, color2);
-                    v.numberPlate = "LS" + id.ToString("D4");
-                    VehicleD vd = new VehicleD(v, owner, id.ToString(),vid);
-                }
-                con.Close();
+            if (!isTableCreated())
+                return;
+
+            con = new MySqlConnection(conString);
+            cmd = con.CreateCommand();
+            cmd.CommandText = "SELECT * FROM VehicleData";
+            
+            con.Open();
+            reader = cmd.ExecuteReader();
+            while(reader.Read()) {
+                int id = reader.GetInt32("id");
+                int vid = reader.GetInt32("invid");
+                VehicleHash model = API.shared.vehicleNameToModel(reader.GetString("model"));
+                Vector3 pos = new Vector3(reader.GetDouble("spawnX"), reader.GetDouble("spawnY"), reader.GetDouble("spawnZ"));
+                Vector3 rot = new Vector3(reader.GetDouble("spawnRX"), reader.GetDouble("spawnRY"), reader.GetDouble("spawnRZ"));
+                Account owner = methods.getMethods.getAccountByName(reader.GetString("Name"));
+                int color1 = reader.GetInt32("color1");
+                int color2 = reader.GetInt32("color2");
+                Vehicle v = API.shared.createVehicle(model, pos, rot, color1, color2);
+                v.numberPlate = "LS" + id.ToString("D4");
+                VehicleD vd = new VehicleD(v, owner, id.ToString(),vid);
             }
+            con.Close();
         }
     }
 }

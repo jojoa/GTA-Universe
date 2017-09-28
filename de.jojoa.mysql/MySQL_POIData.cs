@@ -25,9 +25,11 @@ namespace RealifeGM.de.jojoa.mysql
             
         }
         
-        
         public static int getID(Vector3 pos)
         {
+            if (!isTableCreated())
+                return 0;
+
             con = new MySqlConnection(conString);
             cmd = con.CreateCommand();
             cmd.CommandText = "SELECT * FROM POIData WHERE X=@x AND Y=@y AND Z=@z";
@@ -40,14 +42,16 @@ namespace RealifeGM.de.jojoa.mysql
             while (reader.Read())
             {
                 return reader.GetInt32("id");
-                
-
             }
+
             return 0;
         }
 
         public static void loadPOI()
         {
+            if (!isTableCreated())
+                return;
+
             con = new MySqlConnection(conString);
             cmd = con.CreateCommand();
             cmd.CommandText = "SELECT * FROM POIData";
@@ -68,6 +72,9 @@ namespace RealifeGM.de.jojoa.mysql
 
         public static List<Vector3> getBanks()
         {
+            if (!isTableCreated())
+                return null;
+
             con = new MySqlConnection(conString);
             cmd = con.CreateCommand();
             cmd.CommandText = "SELECT * FROM POIData WHERE Type=@type";
@@ -86,31 +93,38 @@ namespace RealifeGM.de.jojoa.mysql
             return list;
         }
         
-        public static void createTable()
+        public static Boolean isTableCreated()
         {
-            con = new MySqlConnection(conString);
-            cmd = con.CreateCommand();
-            cmd.CommandText = "CREATE TABLE IF NOT EXISTS POIData (Type VARCHAR(100), X double, Y double, Z double, id int AUTO_INCREMENT, PRIMARY KEY (id))";
-            con.Open();
-            cmd.ExecuteNonQuery();
+            try
+            {
+                con = new MySqlConnection(conString);
+                cmd = con.CreateCommand();
+                cmd.CommandText = "CREATE TABLE IF NOT EXISTS POIData (Type VARCHAR(100), X double, Y double, Z double, id int AUTO_INCREMENT, PRIMARY KEY (id))";
+                con.Open();
+                cmd.ExecuteNonQuery();
 
-            con = new MySqlConnection(conString);
-            cmd = con.CreateCommand();
-            cmd.CommandText = "CREATE TABLE IF NOT EXISTS ShopData (X double, Y double, Z double, SPX double, SPY double, SPZ double, RTX double, RTY double, RTZ double , class VARCHAR(100), id int, PRIMARY KEY (id))";
-            con.Open();
-            cmd.ExecuteNonQuery();
+                cmd = con.CreateCommand();
+                cmd.CommandText = "CREATE TABLE IF NOT EXISTS ShopData (X double, Y double, Z double, SPX double, SPY double, SPZ double, RTX double, RTY double, RTZ double , class VARCHAR(100), id int, PRIMARY KEY (id))";
+                con.Open();
+                cmd.ExecuteNonQuery();
 
-            con = new MySqlConnection(conString);
-            cmd = con.CreateCommand();
-            cmd.CommandText = "CREATE TABLE IF NOT EXISTS ShopDataItems (Class VARCHAR(100), name VARCHAR(100), price int, id int,  PRIMARY KEY (id))";
-            con.Open();
-            cmd.ExecuteNonQuery();
-
+                cmd = con.CreateCommand();
+                cmd.CommandText = "CREATE TABLE IF NOT EXISTS ShopDataItems (Class VARCHAR(100), name VARCHAR(100), price int, id int,  PRIMARY KEY (id))";
+                con.Open();
+                cmd.ExecuteNonQuery();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public static void addBank(Vector3 pos)
         {
-            createTable();
+            if (!isTableCreated())
+                return;
+
             con = new MySqlConnection(conString);
             cmd = con.CreateCommand();
             cmd.CommandText = "INSERT INTO POIData (Type,X,Y,Z) VALUES (@type,@x,@y,@z)";
@@ -127,7 +141,9 @@ namespace RealifeGM.de.jojoa.mysql
 
         public static List<Vector3> getShops()
         {
-            createTable();
+            if (!isTableCreated())
+                return null;
+
             con = new MySqlConnection(conString);
             cmd = con.CreateCommand();
             cmd.CommandText = "SELECT * FROM POIData WHERE Type=@type";
@@ -145,10 +161,13 @@ namespace RealifeGM.de.jojoa.mysql
             }
             return list;
         }
+
         public static List<string> getShopItems(Vector3 pos)
         {
-            createTable();
-             int sid = methods.getMethods.getShopByPos(pos);
+            if (!isTableCreated())
+                return null;
+
+            int sid = methods.getMethods.getShopByPos(pos);
             List<string> ls = new List<string>();
             string clas = "";
             con = new MySqlConnection(conString);
@@ -179,8 +198,10 @@ namespace RealifeGM.de.jojoa.mysql
 
         public static Vector3 getShopSpawn(Vector3 pos)
         {
-            createTable();
             Vector3 posSP = new Vector3(0, 0, 0);
+
+            if (!isTableCreated())
+                return posSP;
 
             int sid = methods.getMethods.getShopByPos(pos);
 
@@ -203,10 +224,12 @@ namespace RealifeGM.de.jojoa.mysql
 
         public static Vector3 getShopSpawnRot(Vector3 pos)
         {
-            createTable();
             Vector3 posSP = new Vector3(0, 0, 0);
 
-             int sid = methods.getMethods.getShopByPos(pos);
+            if (!isTableCreated())
+                return posSP;
+
+            int sid = methods.getMethods.getShopByPos(pos);
 
             con = new MySqlConnection(conString);
             cmd = con.CreateCommand();
@@ -227,7 +250,9 @@ namespace RealifeGM.de.jojoa.mysql
 
         public static int addShop(Vector3 pos, string clas)
         {
-            createTable();
+            if (!isTableCreated())
+                return 0;
+
             con = new MySqlConnection(conString);
             cmd = con.CreateCommand();
             cmd.CommandText = "INSERT INTO POIData (Type,X,Y,Z) VALUES (@type,@x,@y,@z)";
@@ -237,8 +262,8 @@ namespace RealifeGM.de.jojoa.mysql
             cmd.Parameters.AddWithValue("@z", pos.Z);
             con.Open();
             cmd.ExecuteNonQuery();
+
             long id = cmd.LastInsertedId;
-            con = new MySqlConnection(conString);
             cmd = con.CreateCommand();
             cmd.CommandText = "INSERT INTO ShopData (id,X,Y,Z,class) VALUES (@id,@x,@y,@z,@class)";
             cmd.Parameters.AddWithValue("@id", id);
@@ -256,6 +281,9 @@ namespace RealifeGM.de.jojoa.mysql
 
         public static Boolean setSpawn(Vector3 pos, Vector3 rot, int sid)
         {
+            if (!isTableCreated())
+                return false;
+
             Vector3 p = null;
             
             con = new MySqlConnection(conString);
