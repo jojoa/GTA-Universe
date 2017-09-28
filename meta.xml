@@ -58,4 +58,17 @@
   <assembly ref="System.Xml.dll" />
   <assembly ref="System.Data.dll" />
   <assembly ref="VehicleInfo.dll" />
+
+  	<settings src="universe.xml" />
+
+  	<!--
+  	You need to copy the following in a "universe.xml" file in your server's directory.
+
+	<settings>
+		<setting name="db_host" value="" default="localhost" description="Server for database access" />
+		<setting name="db_name" value="" default="universe" description="Database name for database access" />
+		<setting name="db_user" value="" default="root" description="User for database access" />
+		<setting name="db_pass" value="" default="" description="Password for database access" />
+	</settings>
+  	-->
 </meta>

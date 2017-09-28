@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace RealifeGM.de.jojoa.mysql
 {
-    class MySQL_InventoryData
+    class MySQL_InventoryData : Script
     {
         #region variables
         public static string conString = "SERVER=localhost;" + "DATABASE=realifegm;" + "UID=root;" + "PASSWORD=;";
@@ -20,6 +20,19 @@ namespace RealifeGM.de.jojoa.mysql
         public static MySqlCommand cmd;
         public static MySqlDataReader reader;
         #endregion variables
+
+        public MySQL_InventoryData()
+        {
+            API.onResourceStart += API_onResourceStart;
+        }
+
+        private void API_onResourceStart()
+        {
+            conString = "SERVER=" + API.getSetting<string>("db_host") + ";" 
+                        + "DATABASE=" + API.getSetting<string>("db_name") + ";" 
+                        + "UID=" + API.getSetting<string>("db_user") + ";" 
+                        + "PASSWORD=" + API.getSetting<string>("db_pass") + ";";
+        }
 
         public static Inventory createInv()
         {
