@@ -36,6 +36,7 @@ namespace RealifeGM.de.jojoa.methods
                     }
                 }
             }
+             }
         
         public static Account getAccountByClient(Client p)
         {
