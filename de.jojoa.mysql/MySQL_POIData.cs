@@ -216,7 +216,7 @@ namespace RealifeGM.de.jojoa.mysql
             cmd.Parameters.AddWithValue("@z", pos.Z);
             con.Open();
             cmd.ExecuteNonQuery();
-            int id = cmd.LastInsertedId;
+            long id = cmd.LastInsertedId;
             con = new MySqlConnection(conString);
             cmd = con.CreateCommand();
             cmd.CommandText = "INSERT INTO ShopData (id,X,Y,Z,class) VALUES (@id,@x,@y,@z,@class)";
