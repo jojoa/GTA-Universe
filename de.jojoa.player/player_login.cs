@@ -53,6 +53,7 @@ namespace RealifeGM.de.jojoa.player
 
                             if(mysql.MySQL_PlayerData.getString(p,"skin") == "null")
                             {
+                                API.consoleOutput("1");
                                 PedHash pedhash = API.pedNameToModel("Abigail");
                                 API.setPlayerSkin(p, pedhash);
 
@@ -69,23 +70,32 @@ namespace RealifeGM.de.jojoa.player
 
                             } else
                             {
+                                API.consoleOutput("2");
                                 PedHash pedhash = API.pedNameToModel(mysql.MySQL_PlayerData.getString(p, "skin"));
                                 API.setPlayerSkin(p, pedhash);
 
                                 Account a = methods.getMethods.getAccountByName(p.name);
+                                API.consoleOutput("3");
                                 a.setClient(p);
+                                API.consoleOutput("4");
                                 API.triggerClientEvent(p, "resetCamera");
+                                API.consoleOutput("5");
                                 API.setEntityData(p, "status", "INGAME");
+                                API.consoleOutput("6");
                                 string spawn = a.spawn;
+                                API.consoleOutput("7");
                                 Vector3 spawn_pos;
-                                
+                                API.consoleOutput("8");
                                 spawn_pos = new Vector3(0, 0, 0);
+                                API.consoleOutput("9");
                                 if (spawn != "newbie")
                                 {
                                     spawn_pos = methods.getMethods.getPropertyByID(spawn).pos;
                                     p.position = spawn_pos;
+
                                 }
-                                
+                                API.consoleOutput("10");
+
 
 
                             }

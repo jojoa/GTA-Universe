@@ -91,7 +91,7 @@ API.onServerEventTrigger.connect(function (name, args) {
 });
 API.onUpdate.connect(function () {
     // MultiplayerInfo
-    if (!API.isChatOpen() && API.isControlJustPressed(20 /* MultiplayerInfo */)) {
+    if (!API.isChatOpen() && API.isControlJustPressed(20 /* MultiplayerInfo */) && !API.getCanOpenChat()) {
         g_currentState++;
         g_stateSet = API.getGameTime();
         API.triggerServerEvent("playerlist_pings");

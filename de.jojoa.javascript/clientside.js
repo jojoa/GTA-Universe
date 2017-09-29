@@ -34,6 +34,6 @@ API.onServerEventTrigger.connect(function (eventName, args) {
 API.onUpdate.connect(function () {
     if (money != 0) {
         var res = API.getScreenResolution();
-        //API.drawText(money.toString(), res.Width - 200, res.Height - 100, 36, 255, 255, 0, 150, 7, 1, false, true, 15);
+        API.drawText(money.toString(), res.Width - 200, res.Height - 100, 36, 255, 255, 0, 150, 7, 1, false, true, 15);
     }
 });
