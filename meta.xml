@@ -7,13 +7,13 @@
   <script src="de.jojoa.methods/locationMethods.cs" type="server" lang="csharp" />
   <script src="de.jojoa.methods/getMethods.cs" type="server" lang="csharp" />
   
-  <script src="de.jojoa.mysql/MYSQL_PlayerData.cs" type="server" lang="csharp" />
-  <script src="de.jojoa.mysql/MYSQL_POIData.cs" type="server" lang="csharp" />
-  <script src="de.jojoa.mysql/MYSQL_Bank.cs" type="server" lang="csharp" />
-  <script src="de.jojoa.mysql/MYSQL_PropertyData.cs" type="server" lang="csharp" />
-  <script src="de.jojoa.mysql/MYSQL_Ranks.cs" type="server" lang="csharp" />
-  <script src="de.jojoa.mysql/MYSQL_Vehicles.cs" type="server" lang="csharp" />
-  <script src="de.jojoa.mysql/MYSQL_InventoryData.cs" type="server" lang="csharp" />
+  <script src="de.jojoa.mysql/MySQL_PlayerData.cs" type="server" lang="csharp" />
+  <script src="de.jojoa.mysql/MySQL_POIData.cs" type="server" lang="csharp" />
+  <script src="de.jojoa.mysql/MySQL_Bank.cs" type="server" lang="csharp" />
+  <script src="de.jojoa.mysql/MySQL_PropertyData.cs" type="server" lang="csharp" />
+  <script src="de.jojoa.mysql/MySQL_Ranks.cs" type="server" lang="csharp" />
+  <script src="de.jojoa.mysql/MySQL_Vehicles.cs" type="server" lang="csharp" />
+  <script src="de.jojoa.mysql/MySQL_InventoryData.cs" type="server" lang="csharp" />
   
   <script src="de.jojoa.player/player_cmds.cs" type="server" lang="csharp" />
   <script src="de.jojoa.player/player_connect.cs" type="server" lang="csharp" />
