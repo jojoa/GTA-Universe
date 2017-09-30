@@ -16,9 +16,7 @@ namespace RealifeGM.de.jojoa.player
     {
         public player_login()
         {
-            
             API.onClientEventTrigger += onClientTriggered;
-            
         }
         #region events
        
@@ -63,13 +61,18 @@ namespace RealifeGM.de.jojoa.player
                                 {
                                     API.sendChatMessageToPlayer(p, msg);
                                 }
-
-                            } else
+                            } 
+                            else
                             {
                                 PedHash pedhash = API.pedNameToModel(mysql.MySQL_PlayerData.getString(p, "skin"));
                                 API.setPlayerSkin(p, pedhash);
 
                                 Account a = methods.getMethods.getAccountByName(p.name);
+
+                                // can't find account, create it
+                                if(a == null)
+                                	a = new Account(p.name);
+
                                 a.setClient(p);
                                 API.triggerClientEvent(p, "resetCamera");
                                 API.setEntityData(p, "status", "INGAME");
