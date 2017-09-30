@@ -42,7 +42,7 @@ namespace RealifeGM.de.jojoa.mysql
             int lastid = getLastID();
             con = new MySqlConnection(conString);
             cmd = con.CreateCommand();
-            cmd.CommandText = "INSERT INTO InventoryData (Name,id,amount) VALUES (@name,@amount,@id)";
+            cmd.CommandText = "INSERT INTO InventoryData (Name,id,amount) VALUES (@name,@id,@amount)";
             cmd.Parameters.AddWithValue("@id", lastid + 1);
             cmd.Parameters.AddWithValue("@amount", 1);
             cmd.Parameters.AddWithValue("@name", "dummy");

@@ -19,7 +19,7 @@ namespace RealifeGM.de.jojoa.data
         public string name;
         string skin;
         public Inventory inv;
-       public List<Property> props = new List<Property>();
+        public List<Property> props = new List<Property>();
         List<Vehicle> cars = new List<Vehicle>();
        
         public List<int> jobids;
