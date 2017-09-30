@@ -36,9 +36,8 @@ namespace RealifeGM.de.jojoa.player
                     if(mysql.MySQL_PlayerData.playerExists(p))
                     {
                         string hashedpw_stored = mysql.MySQL_PlayerData.getString(p, "Password");
-
-
                         string hashedpw_input = API.getHashSHA256(arguments[0].ToString());
+
                         if (hashedpw_input == hashedpw_stored)
                         {
                             for (int i = 0; i < 50; i++)
@@ -48,14 +47,12 @@ namespace RealifeGM.de.jojoa.player
                             API.sendChatMessageToPlayer(p, methods.stringMethods.success_login);
                             API.consoleOutput(methods.stringMethods.console_login.Replace("%name%", p.name));
                             
-
                             mysql.MySQL_PlayerData.updateDatas(p);
 
                             if(mysql.MySQL_PlayerData.getString(p,"skin") == "null")
                             {
                                 PedHash pedhash = API.pedNameToModel("Abigail");
                                 API.setPlayerSkin(p, pedhash);
-
 
                                 API.triggerClientEvent(p, "setCamera", API.getEntityPosition(p).Subtract(new Vector3(0, 3, 0)));
                                 p.freeze(true);
@@ -82,15 +79,15 @@ namespace RealifeGM.de.jojoa.player
                                 spawn_pos = new Vector3(0, 0, 0);
                                 if (spawn != "newbie")
                                 {
-                                    spawn_pos = methods.getMethods.getPropertyByID(spawn).pos;
-                                    p.position = spawn_pos;
+                                    Property spawnProperty = methods.getMethods.getPropertyByID(spawn);
+
+                                    if(spawnProperty != null)
+                                    {
+                                        spawn_pos = spawnProperty.pos;
+                                        p.position = spawn_pos;
+                                    }
                                 }
-                                
-
-
                             }
-
-
                         }
                         else
                         {
@@ -103,10 +100,7 @@ namespace RealifeGM.de.jojoa.player
                     }
                     break;
             }
-
         }
-
-
 
         #endregion events
 
@@ -118,7 +112,5 @@ namespace RealifeGM.de.jojoa.player
         }
 
         #endregion constructors
-
     }
-
 }
