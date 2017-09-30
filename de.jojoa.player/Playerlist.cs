@@ -16,6 +16,8 @@ namespace RealifeGM.de.jojoa.player
 
 		public Playerlist()
 		{
+			return;
+			
 			if (API.isResourceRunning("colorednames")) {
 				API.exported.colorednames.onGotColoredName += new ExportedEvent(ColoredNames_onGotColoredName);
 			} else {

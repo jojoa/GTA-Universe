@@ -7,7 +7,7 @@ var listres = [];
 var x;
 var y;
 API.onUpdate.connect(function () {
-    if (listres != []) {
+    if (listres.lenght > 0) {
         var res = API.getScreenResolution();
         var x = (res.Width - 150) / 2;
         var y = (res.Height - (40 + listres.length * 20)) / 2;
