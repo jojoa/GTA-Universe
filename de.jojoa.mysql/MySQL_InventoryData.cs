@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace RealifeGM.de.jojoa.mysql
 {
-    class MySQL_InventoryData
+    class MySQL_InventoryData : Script
     {
         #region variables
         public static string conString = "SERVER=localhost;" + "DATABASE=realifegm;" + "UID=root;" + "PASSWORD=;";
@@ -21,8 +21,24 @@ namespace RealifeGM.de.jojoa.mysql
         public static MySqlDataReader reader;
         #endregion variables
 
+        public MySQL_InventoryData()
+        {
+            API.onResourceStart += API_onResourceStart;
+        }
+
+        private void API_onResourceStart()
+        {
+            conString = "SERVER=" + API.getSetting<string>("db_host") + ";" 
+                        + "DATABASE=" + API.getSetting<string>("db_name") + ";" 
+                        + "UID=" + API.getSetting<string>("db_user") + ";" 
+                        + "PASSWORD=" + API.getSetting<string>("db_pass") + ";";
+        }
+
         public static Inventory createInv()
         {
+            if (!isTableCreated())
+                return null;
+
             int lastid = getLastID();
             con = new MySqlConnection(conString);
             cmd = con.CreateCommand();
@@ -36,11 +52,13 @@ namespace RealifeGM.de.jojoa.mysql
             con.Close();
 
             return inv;
-
         }
 
         public static int getLastID()
         {
+            if (!isTableCreated())
+                return 0;
+
             int i = 0;
             con = new MySqlConnection(conString);
             cmd = con.CreateCommand();
@@ -61,6 +79,9 @@ namespace RealifeGM.de.jojoa.mysql
 
         public static void Update(Inventory inv)
         {
+            if (!isTableCreated())
+                return;
+
             con = new MySqlConnection(conString);
             cmd = con.CreateCommand();
             cmd.CommandText = "DELETE FROM InventoryData WHERE id=@id";
@@ -90,7 +111,7 @@ namespace RealifeGM.de.jojoa.mysql
             {
                 con = new MySqlConnection(conString);
                 cmd = con.CreateCommand();
-                cmd.CommandText = "CREATE TABLE IF NOT EXISTS InventoryData(Name VARCHAR(100),amount int, id int)";
+                cmd.CommandText = "CREATE TABLE IF NOT EXISTS InventoryData(Name VARCHAR(100),amount int, id int AUTO_INCREMENT, PRIMARY KEY (id))";
                 con.Open();
                 cmd.ExecuteNonQuery();
                 return true;
@@ -103,6 +124,9 @@ namespace RealifeGM.de.jojoa.mysql
 
         public static void loadInvs()
         {
+            if (!isTableCreated())
+                return;
+                
             con = new MySqlConnection(conString);
             cmd = con.CreateCommand();
             cmd.CommandText = "SELECT * FROM InventoryData WHERE name=@name";
@@ -117,7 +141,7 @@ namespace RealifeGM.de.jojoa.mysql
 
             con = new MySqlConnection(conString);
             cmd = con.CreateCommand();
-            cmd.CommandText = "SELECT * FROM InventoryData";
+            cmd.CommandText = "SELECT * FROM InventoryData WHERE name!=@name";
             cmd.Parameters.AddWithValue("@name", "dummy");
             con.Open();
             reader = cmd.ExecuteReader();

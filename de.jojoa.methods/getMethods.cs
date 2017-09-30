@@ -19,6 +19,27 @@ namespace RealifeGM.de.jojoa.methods
         {
 
         }
+        
+        public static int getShopByPos(Vector3 pos)
+        {
+            Vector3 i = null;
+            float d = 100;
+            List<Vector3> lst = mysql.MySQL_POIData.getShops();
+            foreach(Vector3 ps in lst)
+            {
+                if(pos.DistanceTo(ps)<5)
+                {
+                    if(pos.DistanceTo(ps)<d)
+                    {
+                        d = pos.DistanceTo(ps);
+                        i = ps;
+                    }
+                }
+            }
+
+            return mysql.MySQL_POIData.getID(i);
+        }
+        
         public static Account getAccountByClient(Client p)
         {
             foreach (Account acc in lacc)
