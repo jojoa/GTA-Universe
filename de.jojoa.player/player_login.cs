@@ -52,6 +52,7 @@ namespace RealifeGM.de.jojoa.player
                                 PedHash pedhash = API.pedNameToModel("Abigail");
                                 API.setPlayerSkin(p, pedhash);
 
+                                API.setEntityRotation(p, new Vector3(0, 0, 180));
                                 API.triggerClientEvent(p, "setCamera", API.getEntityPosition(p).Subtract(new Vector3(0, 3, 0)));
                                 p.freeze(true);
                                 API.setEntityInvincible(p, true);
