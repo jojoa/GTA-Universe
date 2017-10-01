@@ -41,7 +41,6 @@ namespace RealifeGM.de.jojoa.player
             Account a = methods.getMethods.getAccountByClient(p);
             if (a.rank["createShop"])
             {
-
                 int i = mysql.MySQL_POIData.addShop(p.position, clas);
                 API.sendChatMessageToPlayer(p, "ID: " + i);
             }
