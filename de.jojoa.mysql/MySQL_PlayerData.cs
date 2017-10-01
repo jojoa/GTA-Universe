@@ -14,8 +14,6 @@ namespace RealifeGM.de.jojoa.mysql
     class MySQL_PlayerData : Script
     {
         #region variables
-        public static string conString = "SERVER=localhost;" + "DATABASE=realifegm;" + "UID=root;" + "PASSWORD=;";
-        public static MySqlConnection con;
         public static MySqlCommand cmd;
         public static MySqlDataReader reader;
         #endregion variables
@@ -27,10 +25,7 @@ namespace RealifeGM.de.jojoa.mysql
 
         private void API_onResourceStart()
         {
-            conString = "SERVER=" + API.getSetting<string>("db_host") + ";" 
-                        + "DATABASE=" + API.getSetting<string>("db_name") + ";" 
-                        + "UID=" + API.getSetting<string>("db_user") + ";" 
-                        + "PASSWORD=" + API.getSetting<string>("db_pass") + ";";
+            loadAccounts();
         }
 
         #region registerPlayer
@@ -39,10 +34,8 @@ namespace RealifeGM.de.jojoa.mysql
             if (!isTableCreated())
                 return;
 
-            con = new MySqlConnection(conString);
-            cmd = con.CreateCommand();
+            cmd = Database.getConnection().CreateCommand();
             cmd.CommandText = "INSERT INTO PlayerData (Name, Password, lastIP, level, money, skin, tutorial,spawnID, Invid) VALUES (@name, @hash, @ip, @level, @money, @skin, @tutorial,@spawn,@inv)";
-            con.Open();
             cmd.Parameters.AddWithValue("@name", p.name);
             cmd.Parameters.AddWithValue("@hash", hash);
             cmd.Parameters.AddWithValue("@ip", p.address);
@@ -50,10 +43,9 @@ namespace RealifeGM.de.jojoa.mysql
             cmd.Parameters.AddWithValue("@money", 5000);
             cmd.Parameters.AddWithValue("@skin", "null");
             cmd.Parameters.AddWithValue("@tutorial", false);
-            cmd.Parameters.AddWithValue("@inv",mysql.MySQL_InventoryData.createInv().id);
+            cmd.Parameters.AddWithValue("@inv", mysql.MySQL_InventoryData.createInv().id);
             cmd.Parameters.AddWithValue("@spawn", "newbie");
             cmd.ExecuteNonQuery();
-            con.Close();
         }
         #endregion registerPlayer
 
@@ -63,10 +55,8 @@ namespace RealifeGM.de.jojoa.mysql
             if (!isTableCreated())
                 return false;
 
-            con = new MySqlConnection(conString);
-            cmd = con.CreateCommand();
+            cmd = Database.getConnection().CreateCommand();
             cmd.CommandText = "SELECT * FROM PlayerData";
-            con.Open();
             reader = cmd.ExecuteReader();
 
             while (reader.Read())
@@ -74,12 +64,10 @@ namespace RealifeGM.de.jojoa.mysql
                 string name = reader.GetString("Name");
                 if (name == p.name)
                 {
-                    con.Close();
                     reader.Close();
                     return true;
                 }
             }
-            con.Close();
             reader.Close();
             return false;
         }
@@ -91,20 +79,18 @@ namespace RealifeGM.de.jojoa.mysql
             if (!isTableCreated())
                 return null;
 
-            con = new MySqlConnection(conString);
-            cmd = con.CreateCommand();
+            cmd = Database.getConnection().CreateCommand();
             cmd.CommandText = "SELECT * FROM PlayerData WHERE Name=@name";
             cmd.Parameters.AddWithValue("@name", p.name);
-            con.Open();
             reader = cmd.ExecuteReader();
 
             while(reader.Read())
             {
                 string getted = reader.GetString(get);
+                reader.Close();
                 return getted;
             }
             reader.Close();
-            con.Close();
             return null;
         }
 
@@ -113,20 +99,18 @@ namespace RealifeGM.de.jojoa.mysql
             if (!isTableCreated())
                 return null;
 
-            con = new MySqlConnection(conString);
-            cmd = con.CreateCommand();
+            cmd = Database.getConnection().CreateCommand();
             cmd.CommandText = "SELECT * FROM PlayerData WHERE Name=@name";
             cmd.Parameters.AddWithValue("@name", name);
-            con.Open();
             reader = cmd.ExecuteReader();
 
             while (reader.Read())
             {
                 string getted = reader.GetString(get);
+                reader.Close();
                 return getted;
             }
             reader.Close();
-            con.Close();
             return null;
         }
 
@@ -135,20 +119,18 @@ namespace RealifeGM.de.jojoa.mysql
             if (!isTableCreated())
                 return 0;
 
-            con = new MySqlConnection(conString);
-            cmd = con.CreateCommand();
+            cmd = Database.getConnection().CreateCommand();
             cmd.CommandText = "SELECT * FROM PlayerData WHERE Name=@name";
             cmd.Parameters.AddWithValue("@name", p.name);
-            con.Open();
             reader = cmd.ExecuteReader();
 
             while (reader.Read())
             {
                 int getted = reader.GetInt16(get);
+                reader.Close();
                 return getted;
             }
             reader.Close();
-            con.Close();
             return 0;
         }
 
@@ -157,20 +139,18 @@ namespace RealifeGM.de.jojoa.mysql
             if (!isTableCreated())
                 return 0;
 
-            con = new MySqlConnection(conString);
-            cmd = con.CreateCommand();
+            cmd = Database.getConnection().CreateCommand();
             cmd.CommandText = "SELECT * FROM PlayerData WHERE Name=@name";
             cmd.Parameters.AddWithValue("@name", name);
-            con.Open();
             reader = cmd.ExecuteReader();
 
             while (reader.Read())
             {
                 int getted = reader.GetInt16(get);
+                reader.Close();
                 return getted;
             }
             reader.Close();
-            con.Close();
             return 0;
         }
         #endregion get
@@ -181,14 +161,11 @@ namespace RealifeGM.de.jojoa.mysql
             if (!isTableCreated())
                 return;
 
-            con = new MySqlConnection(conString);
-            cmd = con.CreateCommand();
+            cmd = Database.getConnection().CreateCommand();
             cmd.CommandText = "UPDATE PlayerData SET " + set + "=@whattoset WHERE Name=@name";
             cmd.Parameters.AddWithValue("@whattoset", whattoset);
             cmd.Parameters.AddWithValue("@name", p.name);
-            con.Open();
             cmd.ExecuteNonQuery();
-            con.Close();
         }
         #endregion set
 
@@ -197,10 +174,8 @@ namespace RealifeGM.de.jojoa.mysql
         {
             try
             {
-                con = new MySqlConnection(conString);
-                cmd = con.CreateCommand();
+                cmd = Database.getConnection().CreateCommand();
                 cmd.CommandText = "CREATE TABLE IF NOT EXISTS PlayerData(Name VARCHAR(100), Password VARCHAR(100), lastIP VARCHAR(100), level int, money int, skin VARCHAR(100),tutorial VARCHAR(10),spawnID int,Invid int, id int AUTO_INCREMENT, PRIMARY KEY (id))";
-                con.Open();
                 cmd.ExecuteNonQuery();
                 return true;
             }catch(Exception)
@@ -219,11 +194,9 @@ namespace RealifeGM.de.jojoa.mysql
             if (!isTableCreated())
                 return;
 
-            con = new MySqlConnection(conString);
-            cmd = con.CreateCommand();
+            cmd = Database.getConnection().CreateCommand();
             cmd.CommandText = "SELECT * FROM PlayerData";
            
-            con.Open();
             reader = cmd.ExecuteReader();
 
             while (reader.Read())
@@ -232,7 +205,6 @@ namespace RealifeGM.de.jojoa.mysql
                 Account a = new Account(name);  
             }
             reader.Close();
-            con.Close();
         }
         #endregion othermethods
     }

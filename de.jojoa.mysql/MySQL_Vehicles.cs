@@ -16,8 +16,6 @@ namespace RealifeGM.de.jojoa.mysql
     class MySQL_Vehicles : Script
     {
         #region variables
-        public static string conString = "SERVER=localhost;" + "DATABASE=realifegm;" + "UID=root;" + "PASSWORD=;";
-        public static MySqlConnection con;
         public static MySqlCommand cmd;
         public static MySqlDataReader reader;
         #endregion variables
@@ -29,10 +27,7 @@ namespace RealifeGM.de.jojoa.mysql
 
         private void API_onResourceStart()
         {
-            conString = "SERVER=" + API.getSetting<string>("db_host") + ";" 
-                        + "DATABASE=" + API.getSetting<string>("db_name") + ";" 
-                        + "UID=" + API.getSetting<string>("db_user") + ";" 
-                        + "PASSWORD=" + API.getSetting<string>("db_pass") + ";";
+            loadVehicles();
         }
 
         public static VehicleD createVehicle(Account owner,string model,Vector3 pos,Vector3 rot)
@@ -41,10 +36,9 @@ namespace RealifeGM.de.jojoa.mysql
                 return null;
 
             Inventory vhc = MySQL_InventoryData.createInv();
-            con = new MySqlConnection(conString);
-            cmd = con.CreateCommand();
+
+            cmd = Database.getConnection().CreateCommand();
             cmd.CommandText = "INSERT INTO VehicleData (Name,model,color1,color2,spawnX,spawnY,spawnZ,spawnRX,spawnRY,spawnRZ,invid) VALUES (@name,@model,@color1,@color2,@spawnX,@spawnY,@spawnZ,@spawnRX,@spawnRY,@spawnRZ,@invid)";
-            con.Open();
             cmd.Parameters.AddWithValue("@name", owner.name);
             cmd.Parameters.AddWithValue("@model", model);
             cmd.Parameters.AddWithValue("@color1", 4);
@@ -65,7 +59,6 @@ namespace RealifeGM.de.jojoa.mysql
             VehicleD vd = new VehicleD(v, owner, cmd.LastInsertedId.ToString(),vhc.id);
            
             cmd.ExecuteNonQuery();
-            con.Close();
             return vd;
         }
 
@@ -73,10 +66,8 @@ namespace RealifeGM.de.jojoa.mysql
         {
             try
             {
-                con = new MySqlConnection(conString);
-                cmd = con.CreateCommand();
+                cmd = Database.getConnection().CreateCommand();
                 cmd.CommandText = "CREATE TABLE IF NOT EXISTS VehicleData (Name VARCHAR(100),model VARCHAR(100), color1 int,color2 int, spawnX double , spawnY double , spawnZ double,spawnRX double , spawnRY double , spawnRZ double, invid int, id int AUTO_INCREMENT, PRIMARY KEY (id))";
-                con.Open();
                 cmd.ExecuteNonQuery();
                 return true;
             }
@@ -91,8 +82,7 @@ namespace RealifeGM.de.jojoa.mysql
             if (!isTableCreated())
                 return;
 
-            con = new MySqlConnection(conString);
-            cmd = con.CreateCommand();
+            cmd = Database.getConnection().CreateCommand();
             cmd.CommandText = "UPDATE VehicleData SET (spawnX, spawnY, spawnZ,spawnRX,spawnRY,spawnRZ) VALUES (@x,@y,@z,@rx,@ry,@rz) WHERE id=@id";
             cmd.Parameters.AddWithValue("@x", vd.v.position.X);
             cmd.Parameters.AddWithValue("@y", vd.v.position.Y);
@@ -101,9 +91,7 @@ namespace RealifeGM.de.jojoa.mysql
             cmd.Parameters.AddWithValue("@ry", vd.v.rotation.Y);
             cmd.Parameters.AddWithValue("@rz", vd.v.rotation.Z);
             cmd.Parameters.AddWithValue("@id", vd.id);
-            con.Open();
             cmd.ExecuteNonQuery();
-            con.Close();
         }
 
         public static void loadVehicles()
@@ -111,12 +99,10 @@ namespace RealifeGM.de.jojoa.mysql
             if (!isTableCreated())
                 return;
 
-            con = new MySqlConnection(conString);
-            cmd = con.CreateCommand();
+            cmd = Database.getConnection().CreateCommand();
             cmd.CommandText = "SELECT * FROM VehicleData";
-            
-            con.Open();
             reader = cmd.ExecuteReader();
+
             while(reader.Read()) {
                 int id = reader.GetInt32("id");
                 int vid = reader.GetInt32("invid");
@@ -130,7 +116,8 @@ namespace RealifeGM.de.jojoa.mysql
                 v.numberPlate = "LS" + id.ToString("D4");
                 VehicleD vd = new VehicleD(v, owner, id.ToString(),vid);
             }
-            con.Close();
+            
+            reader.Close();
         }
     }
 }

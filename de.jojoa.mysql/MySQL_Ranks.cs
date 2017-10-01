@@ -13,8 +13,6 @@ namespace RealifeGM.de.jojoa.mysql
     class MySQL_Ranks : Script
     {
         #region variables
-        public static string conString = "SERVER=localhost;" + "DATABASE=realifegm;" + "UID=root;" + "PASSWORD=;";
-        public static MySqlConnection con;
         public static MySqlCommand cmd;
         public static MySqlDataReader reader;
         #endregion variables
@@ -26,10 +24,6 @@ namespace RealifeGM.de.jojoa.mysql
 
         private void API_onResourceStart()
         {
-            conString = "SERVER=" + API.getSetting<string>("db_host") + ";" 
-                        + "DATABASE=" + API.getSetting<string>("db_name") + ";" 
-                        + "UID=" + API.getSetting<string>("db_user") + ";" 
-                        + "PASSWORD=" + API.getSetting<string>("db_pass") + ";";
         }
 
         #region registerPlayer
@@ -38,10 +32,8 @@ namespace RealifeGM.de.jojoa.mysql
             if (!isTableCreated())
                 return;
 
-            con = new MySqlConnection(conString);
-            cmd = con.CreateCommand();
+            cmd = Database.getConnection().CreateCommand();
             cmd.CommandText = "INSERT INTO RankData (Name, createprop, removeprop, god, fly , kick, pos,id,createShop,createBank,spawncar,givemoney) VALUES (@name,@cp,@rp,@god,@fly,@kick,@pos,@id,@cs,@cb,@sc,@gm)";
-            con.Open();
             cmd.Parameters.AddWithValue("@name", name.name);
             cmd.Parameters.AddWithValue("@cp", 0);
             cmd.Parameters.AddWithValue("@rp", 0);
@@ -55,7 +47,6 @@ namespace RealifeGM.de.jojoa.mysql
             cmd.Parameters.AddWithValue("@gm", 0);
             cmd.Parameters.AddWithValue("@id", name.id);
             cmd.ExecuteNonQuery();
-            con.Close();
         }
         #endregion registerPlayer
 
@@ -65,20 +56,19 @@ namespace RealifeGM.de.jojoa.mysql
             if (!isTableCreated())
                 return null;
 
-            con = new MySqlConnection(conString);
-            cmd = con.CreateCommand();
+            cmd = Database.getConnection().CreateCommand();
             cmd.CommandText = "SELECT * FROM RankData WHERE Name=@name";
             cmd.Parameters.AddWithValue("@name", p.name);
-            con.Open();
             reader = cmd.ExecuteReader();
 
             while (reader.Read())
             {
                 string getted = reader.GetString(get);
+                reader.Close();
                 return getted;
             }
+
             reader.Close();
-            con.Close();
             return null;
         }
 
@@ -87,20 +77,19 @@ namespace RealifeGM.de.jojoa.mysql
            if (!isTableCreated())
                 return null;
 
-            con = new MySqlConnection(conString);
-            cmd = con.CreateCommand();
+            cmd = Database.getConnection().CreateCommand();
             cmd.CommandText = "SELECT * FROM RankData WHERE Name=@name";
             cmd.Parameters.AddWithValue("@name", name);
-            con.Open();
             reader = cmd.ExecuteReader();
 
             while (reader.Read())
             {
                 string getted = reader.GetString(get);
+                reader.Close();
                 return getted;
             }
+
             reader.Close();
-            con.Close();
             return null;
         }
 
@@ -109,20 +98,19 @@ namespace RealifeGM.de.jojoa.mysql
             if (!isTableCreated())
                 return 0;
 
-            con = new MySqlConnection(conString);
-            cmd = con.CreateCommand();
+            cmd = Database.getConnection().CreateCommand();
             cmd.CommandText = "SELECT * FROM RankData WHERE Name=@name";
             cmd.Parameters.AddWithValue("@name", p.name);
-            con.Open();
             reader = cmd.ExecuteReader();
 
             while (reader.Read())
             {
                 int getted = reader.GetInt16(get);
+                reader.Close();
                 return getted;
             }
+
             reader.Close();
-            con.Close();
             return 0;
         }
 
@@ -131,20 +119,19 @@ namespace RealifeGM.de.jojoa.mysql
             if (!isTableCreated())
                 return 0;
 
-            con = new MySqlConnection(conString);
-            cmd = con.CreateCommand();
+            cmd = Database.getConnection().CreateCommand();
             cmd.CommandText = "SELECT * FROM RankData WHERE Name=@name";
             cmd.Parameters.AddWithValue("@name", name);
-            con.Open();
             reader = cmd.ExecuteReader();
 
             while (reader.Read())
             {
                 int getted = reader.GetInt16(get);
+                reader.Close();
                 return getted;
             }
+
             reader.Close();
-            con.Close();
             return 0;
         }
         #endregion get
@@ -155,14 +142,11 @@ namespace RealifeGM.de.jojoa.mysql
             if (!isTableCreated())
                 return;
 
-            con = new MySqlConnection(conString);
-            cmd = con.CreateCommand();
+            cmd = Database.getConnection().CreateCommand();
             cmd.CommandText = "UPDATE RankData SET " + set + "=@whattoset WHERE Name=@name";
             cmd.Parameters.AddWithValue("@whattoset", whattoset);
             cmd.Parameters.AddWithValue("@name", p.name);
-            con.Open();
             cmd.ExecuteNonQuery();
-            con.Close();
         }
         #endregion set
 
@@ -171,10 +155,8 @@ namespace RealifeGM.de.jojoa.mysql
         {
             try
             {
-                con = new MySqlConnection(conString);
-                cmd = con.CreateCommand();
+                cmd = Database.getConnection().CreateCommand();
                 cmd.CommandText = "CREATE TABLE IF NOT EXISTS RankData(Name VARCHAR(100),id int AUTO_INCREMENT,createprop tinyint,removeprop tinyint,fly tinyint,god tinyint,kick tinyint,pos tinyint ,createShop tinyint, createBank tinyint, spawncar tinyint, givemoney tinyint, PRIMARY KEY(id))";
-                con.Open();
                 cmd.ExecuteNonQuery();
                 return true;
             }
@@ -189,12 +171,9 @@ namespace RealifeGM.de.jojoa.mysql
             if (!isTableCreated())
                 return null;
 
-            con = new MySqlConnection(conString);
-            cmd = con.CreateCommand();
+            cmd = Database.getConnection().CreateCommand();
             cmd.CommandText = "SELECT * FROM RankData WHERE Name=@name";
             cmd.Parameters.AddWithValue("@name", user);
-
-            con.Open();
             reader = cmd.ExecuteReader();
 
             while (reader.Read())
@@ -210,14 +189,12 @@ namespace RealifeGM.de.jojoa.mysql
                 dic.Add("createBank", reader.GetBoolean("createBank"));
                 dic.Add("spawncar", reader.GetBoolean("spawncar"));
                 dic.Add("givemoney", reader.GetBoolean("givemoney"));
-                reader.Close();
-                con.Close();
-                return dic;
 
+                reader.Close();
+                return dic;
             }
             
             reader.Close();
-            con.Close();
             return null;
         }
         #endregion othermethods

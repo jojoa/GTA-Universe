@@ -15,8 +15,6 @@ namespace RealifeGM.de.jojoa.mysql
     class MySQL_InventoryData : Script
     {
         #region variables
-        public static string conString = "SERVER=localhost;" + "DATABASE=realifegm;" + "UID=root;" + "PASSWORD=;";
-        public static MySqlConnection con;
         public static MySqlCommand cmd;
         public static MySqlDataReader reader;
         #endregion variables
@@ -28,10 +26,7 @@ namespace RealifeGM.de.jojoa.mysql
 
         private void API_onResourceStart()
         {
-            conString = "SERVER=" + API.getSetting<string>("db_host") + ";" 
-                        + "DATABASE=" + API.getSetting<string>("db_name") + ";" 
-                        + "UID=" + API.getSetting<string>("db_user") + ";" 
-                        + "PASSWORD=" + API.getSetting<string>("db_pass") + ";";
+            loadInvs();
         }
 
         public static Inventory createInv()
@@ -40,16 +35,14 @@ namespace RealifeGM.de.jojoa.mysql
                 return null;
 
             int lastid = getLastID();
-            con = new MySqlConnection(conString);
-            cmd = con.CreateCommand();
+
+            cmd = Database.getConnection().CreateCommand();
             cmd.CommandText = "INSERT INTO InventoryData (Name,id,amount) VALUES (@name,@id,@amount)";
             cmd.Parameters.AddWithValue("@id", lastid + 1);
             cmd.Parameters.AddWithValue("@amount", 1);
             cmd.Parameters.AddWithValue("@name", "dummy");
-            con.Open();
             cmd.ExecuteNonQuery();
             Inventory inv = new Inventory(lastid + 1);
-            con.Close();
 
             return inv;
         }
@@ -60,10 +53,9 @@ namespace RealifeGM.de.jojoa.mysql
                 return 0;
 
             int i = 0;
-            con = new MySqlConnection(conString);
-            cmd = con.CreateCommand();
+
+            cmd = Database.getConnection().CreateCommand();
             cmd.CommandText = "SELECT * FROM InventoryData";
-            con.Open();
             reader = cmd.ExecuteReader();
             while(reader.Read())
             {
@@ -73,7 +65,7 @@ namespace RealifeGM.de.jojoa.mysql
                     i = a;
                 }
             }
-            con.Close();
+            reader.Close();
             return i;
         }
 
@@ -82,37 +74,28 @@ namespace RealifeGM.de.jojoa.mysql
             if (!isTableCreated())
                 return;
 
-            con = new MySqlConnection(conString);
-            cmd = con.CreateCommand();
+            cmd = Database.getConnection().CreateCommand();
             cmd.CommandText = "DELETE FROM InventoryData WHERE id=@id";
             cmd.Parameters.AddWithValue("@id", inv.id);
-            con.Open();
             cmd.ExecuteNonQuery();
-            con.Close();
 
             foreach(string i in inv.items.Keys)
             {
-                con = new MySqlConnection(conString);
-                cmd = con.CreateCommand();
+                cmd = Database.getConnection().CreateCommand();
                 cmd.CommandText = "INSERT INTO InventoryData (id, name, amount) VALUES (@id,@name,@amount)";
                 cmd.Parameters.AddWithValue("@id", inv.id);
                 cmd.Parameters.AddWithValue("@name", i);
                 cmd.Parameters.AddWithValue("@amount", inv.items[i]);
-                con.Open();
                 cmd.ExecuteNonQuery();
-                con.Close();
             }
-
         }
 
         public static Boolean isTableCreated()
         {
             try
             {
-                con = new MySqlConnection(conString);
-                cmd = con.CreateCommand();
+                cmd = Database.getConnection().CreateCommand();
                 cmd.CommandText = "CREATE TABLE IF NOT EXISTS InventoryData(Name VARCHAR(100),amount int, id int AUTO_INCREMENT, PRIMARY KEY (id))";
-                con.Open();
                 cmd.ExecuteNonQuery();
                 return true;
             }
@@ -126,31 +109,27 @@ namespace RealifeGM.de.jojoa.mysql
         {
             if (!isTableCreated())
                 return;
-                
-            con = new MySqlConnection(conString);
-            cmd = con.CreateCommand();
+
+            cmd = Database.getConnection().CreateCommand();
             cmd.CommandText = "SELECT * FROM InventoryData WHERE name=@name";
             cmd.Parameters.AddWithValue("@name", "dummy");
-            con.Open();
             reader = cmd.ExecuteReader();
             while (reader.Read())
             {
                 Inventory inv = new Inventory(reader.GetInt32("id"));
             }
-            con.Close();
+            reader.Close();
 
-            con = new MySqlConnection(conString);
-            cmd = con.CreateCommand();
+            cmd = Database.getConnection().CreateCommand();
             cmd.CommandText = "SELECT * FROM InventoryData WHERE name!=@name";
             cmd.Parameters.AddWithValue("@name", "dummy");
-            con.Open();
             reader = cmd.ExecuteReader();
             while (reader.Read())
             {
                 Inventory inv = methods.getMethods.getInvById(reader.GetInt32("id"));
                 inv.addItem(reader.GetString("name"), reader.GetInt32("amount"));
             }
-            con.Close();
+            reader.Close();
         }
     }
 }

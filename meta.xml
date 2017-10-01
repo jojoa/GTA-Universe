@@ -2,6 +2,13 @@
   <info name="RealifeGM" author="jojoa" type="script" />
 
   <script src="de.jojoa.main/Main.cs" type="server" lang="csharp" />
+
+  <script src="de.jojoa.data/Database.cs" type="server" lang="csharp" />
+  <script src="de.jojoa.data/Account.cs" type="server" lang="csharp" />
+  <script src="de.jojoa.data/Property.cs" type="server" lang="csharp" />
+  <script src="de.jojoa.data/Vehicle.cs" type="server" lang="csharp" />
+  <script src="de.jojoa.data/Bank_Account.cs" type="server" lang="csharp" />
+  <script src="de.jojoa.data/Inventory.cs" type="server" lang="csharp" />
   
   <script src="de.jojoa.methods/stringMethods.cs" type="server" lang="csharp" />
   <script src="de.jojoa.methods/locationMethods.cs" type="server" lang="csharp" />
@@ -24,12 +31,6 @@
   <script src="de.jojoa.player/player_keys.cs" type="server" lang="csharp" />
   <script src="de.jojoa.player/player_vehicle.cs" type="server" lang="csharp" />
   <script src="de.jojoa.player/Playerlist.cs" type="server" lang="csharp" />
-
-  <script src="de.jojoa.data/Account.cs" type="server" lang="csharp" />
-  <script src="de.jojoa.data/Property.cs" type="server" lang="csharp" />
-  <script src="de.jojoa.data/Vehicle.cs" type="server" lang="csharp" />
-  <script src="de.jojoa.data/Bank_Account.cs" type="server" lang="csharp" />
-  <script src="de.jojoa.data/Inventory.cs" type="server" lang="csharp" />
   
    <script src="de.jojoa.events/race_event.cs" type="server" lang="csharp" />
   
@@ -58,17 +59,5 @@
   <assembly ref="System.Xml.dll" />
   <assembly ref="System.Data.dll" />
   <assembly ref="VehicleInfo.dll" />
-
-  	<settings src="universe.xml" />
-
-  	<!--
-  	You need to copy the following in a "universe.xml" file in your server's directory.
-
-	<settings>
-		<setting name="db_host" value="" default="localhost" description="Server for database access" />
-		<setting name="db_name" value="" default="universe" description="Database name for database access" />
-		<setting name="db_user" value="" default="root" description="User for database access" />
-		<setting name="db_pass" value="" default="" description="Password for database access" />
-	</settings>
-  	-->
 </meta>
+

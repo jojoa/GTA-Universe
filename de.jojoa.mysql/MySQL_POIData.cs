@@ -14,8 +14,6 @@ namespace RealifeGM.de.jojoa.mysql
     class MySQL_POIData : Script
     {
         #region variables
-        public static string conString = "SERVER=localhost;" + "DATABASE=realifegm;" + "UID=root;" + "PASSWORD=;";
-        public static MySqlConnection con;
         public static MySqlCommand cmd;
         public static MySqlDataReader reader;
         #endregion variables
@@ -27,10 +25,7 @@ namespace RealifeGM.de.jojoa.mysql
 
         private void API_onResourceStart()
         {
-            conString = "SERVER=" + API.getSetting<string>("db_host") + ";" 
-                        + "DATABASE=" + API.getSetting<string>("db_name") + ";" 
-                        + "UID=" + API.getSetting<string>("db_user") + ";" 
-                        + "PASSWORD=" + API.getSetting<string>("db_pass") + ";";
+            loadPOI();
         }
         
         public static int getID(Vector3 pos)
@@ -38,20 +33,20 @@ namespace RealifeGM.de.jojoa.mysql
             if (!isTableCreated())
                 return 0;
 
-            con = new MySqlConnection(conString);
-            cmd = con.CreateCommand();
+            cmd = Database.getConnection().CreateCommand();
             cmd.CommandText = "SELECT * FROM POIData WHERE X=@x AND Y=@y AND Z=@z";
             cmd.Parameters.AddWithValue("@x", pos.X);
             cmd.Parameters.AddWithValue("@y", pos.Y);
             cmd.Parameters.AddWithValue("@z", pos.Z);
-            con.Open();
             reader = cmd.ExecuteReader();
           
             while (reader.Read())
             {
+                reader.Close();
                 return reader.GetInt32("id");
             }
 
+            reader.Close();
             return 0;
         }
 
@@ -60,10 +55,8 @@ namespace RealifeGM.de.jojoa.mysql
             if (!isTableCreated())
                 return;
 
-            con = new MySqlConnection(conString);
-            cmd = con.CreateCommand();
+            cmd = Database.getConnection().CreateCommand();
             cmd.CommandText = "SELECT * FROM POIData";
-            con.Open();
             reader = cmd.ExecuteReader();
           
             while (reader.Read())
@@ -76,6 +69,8 @@ namespace RealifeGM.de.jojoa.mysql
                 API.shared.createMarker(1, pos, new Vector3(), new Vector3(), new Vector3(1, 1, 1), 150, 0, 255, 0);
                 API.shared.createTextLabel(type, pos.Add(new Vector3(0, 2, 0)), 5, 10);
             }
+
+            reader.Close();
         }
 
         public static List<Vector3> getBanks()
@@ -83,11 +78,9 @@ namespace RealifeGM.de.jojoa.mysql
             if (!isTableCreated())
                 return null;
 
-            con = new MySqlConnection(conString);
-            cmd = con.CreateCommand();
+            cmd = Database.getConnection().CreateCommand();
             cmd.CommandText = "SELECT * FROM POIData WHERE Type=@type";
             cmd.Parameters.AddWithValue("@type", "Bank");
-            con.Open();
             reader = cmd.ExecuteReader();
             List <Vector3> list = new List<Vector3>();
             while(reader.Read())
@@ -98,6 +91,7 @@ namespace RealifeGM.de.jojoa.mysql
                 pos.Z = reader.GetFloat("Z");
                 list.Add(pos);
             }
+            reader.Close();
             return list;
         }
         
@@ -105,20 +99,16 @@ namespace RealifeGM.de.jojoa.mysql
         {
             try
             {
-                con = new MySqlConnection(conString);
-                cmd = con.CreateCommand();
+                cmd = Database.getConnection().CreateCommand();
                 cmd.CommandText = "CREATE TABLE IF NOT EXISTS POIData (Type VARCHAR(100), X double, Y double, Z double, id int AUTO_INCREMENT, PRIMARY KEY (id))";
-                con.Open();
                 cmd.ExecuteNonQuery();
 
-                cmd = con.CreateCommand();
+                cmd = Database.getConnection().CreateCommand();
                 cmd.CommandText = "CREATE TABLE IF NOT EXISTS ShopData (X double, Y double, Z double, SPX double, SPY double, SPZ double, RTX double, RTY double, RTZ double , class VARCHAR(100), id int, PRIMARY KEY (id))";
-                con.Open();
                 cmd.ExecuteNonQuery();
 
-                cmd = con.CreateCommand();
+                cmd = Database.getConnection().CreateCommand();
                 cmd.CommandText = "CREATE TABLE IF NOT EXISTS ShopDataItems (Class VARCHAR(100), name VARCHAR(100), price int, id int,  PRIMARY KEY (id))";
-                con.Open();
                 cmd.ExecuteNonQuery();
                 return true;
             }
@@ -133,16 +123,14 @@ namespace RealifeGM.de.jojoa.mysql
             if (!isTableCreated())
                 return;
 
-            con = new MySqlConnection(conString);
-            cmd = con.CreateCommand();
+            cmd = Database.getConnection().CreateCommand();
             cmd.CommandText = "INSERT INTO POIData (Type,X,Y,Z) VALUES (@type,@x,@y,@z)";
             cmd.Parameters.AddWithValue("@type", "Bank");
             cmd.Parameters.AddWithValue("@x", pos.X);
             cmd.Parameters.AddWithValue("@y", pos.Y);
             cmd.Parameters.AddWithValue("@z", pos.Z);
-            con.Open();
             cmd.ExecuteNonQuery();
-            con.Close();
+
             API.shared.createMarker(1, pos, new Vector3(), new Vector3(), new Vector3(1, 1, 1), 150, 0, 255, 0);
             API.shared.createTextLabel("Bank", pos.Add(new Vector3(0, 2, 0)), 5, 10);
         }
@@ -152,11 +140,9 @@ namespace RealifeGM.de.jojoa.mysql
             if (!isTableCreated())
                 return null;
 
-            con = new MySqlConnection(conString);
-            cmd = con.CreateCommand();
+            cmd = Database.getConnection().CreateCommand();
             cmd.CommandText = "SELECT * FROM POIData WHERE Type=@type";
             cmd.Parameters.AddWithValue("@type", "Shop");
-            con.Open();
             reader = cmd.ExecuteReader();
             List<Vector3> list = new List<Vector3>();
             while (reader.Read())
@@ -167,6 +153,7 @@ namespace RealifeGM.de.jojoa.mysql
                 pos.Z = reader.GetFloat("Z");
                 list.Add(pos);
             }
+            reader.Close();
             return list;
         }
 
@@ -178,11 +165,10 @@ namespace RealifeGM.de.jojoa.mysql
             int sid = methods.getMethods.getShopByPos(pos);
             List<string> ls = new List<string>();
             string clas = "";
-            con = new MySqlConnection(conString);
-            cmd = con.CreateCommand();
+
+            cmd = Database.getConnection().CreateCommand();
             cmd.CommandText = "SELECT * FROM ShopData WHERE id=@id";
             cmd.Parameters.AddWithValue("@id", sid);
-            con.Open();
             reader = cmd.ExecuteReader();
             
             while (reader.Read())
@@ -190,17 +176,19 @@ namespace RealifeGM.de.jojoa.mysql
                 clas = reader.GetString("class");
             }
 
-            con = new MySqlConnection(conString);
-            cmd = con.CreateCommand();
+            reader.Close();
+
+            cmd = Database.getConnection().CreateCommand();
             cmd.CommandText = "SELECT * FROM ShopDataItems WHERE Class=@clas";
             cmd.Parameters.AddWithValue("@clas", clas);
-            con.Open();
             reader = cmd.ExecuteReader();
 
             while (reader.Read())
             {
                 ls.Add(reader.GetString("name") + ":" + reader.GetInt16("price"));
             }
+
+            reader.Close();
             return ls;
         }
 
@@ -213,20 +201,19 @@ namespace RealifeGM.de.jojoa.mysql
 
             int sid = methods.getMethods.getShopByPos(pos);
 
-            con = new MySqlConnection(conString);
-            cmd = con.CreateCommand();
+            cmd = Database.getConnection().CreateCommand();
             cmd.CommandText = "SELECT * FROM ShopData WHERE id=@id";
             cmd.Parameters.AddWithValue("@id", sid);
-            con.Open();
             reader = cmd.ExecuteReader();
 
             while (reader.Read())
             {
                 posSP.X = reader.GetFloat("SPX");
-                    posSP.Y = reader.GetFloat("SPY");
-                    posSP.Z = reader.GetFloat("SPZ");
+                posSP.Y = reader.GetFloat("SPY");
+                posSP.Z = reader.GetFloat("SPZ");
             }
 
+            reader.Close();
             return posSP;
         }
 
@@ -239,11 +226,9 @@ namespace RealifeGM.de.jojoa.mysql
 
             int sid = methods.getMethods.getShopByPos(pos);
 
-            con = new MySqlConnection(conString);
-            cmd = con.CreateCommand();
+            cmd = Database.getConnection().CreateCommand();
             cmd.CommandText = "SELECT * FROM ShopData WHERE id=@id";
             cmd.Parameters.AddWithValue("@id", sid);
-            con.Open();
             reader = cmd.ExecuteReader();
 
             while (reader.Read())
@@ -253,6 +238,7 @@ namespace RealifeGM.de.jojoa.mysql
                 posSP.Z = reader.GetFloat("RTZ");
             }
 
+            reader.Close();
             return posSP;
         }
 
@@ -261,25 +247,22 @@ namespace RealifeGM.de.jojoa.mysql
             if (!isTableCreated())
                 return 0;
 
-            con = new MySqlConnection(conString);
-            cmd = con.CreateCommand();
+            cmd = Database.getConnection().CreateCommand();
             cmd.CommandText = "INSERT INTO POIData (Type,X,Y,Z) VALUES (@type,@x,@y,@z)";
             cmd.Parameters.AddWithValue("@type", "Shop");
             cmd.Parameters.AddWithValue("@x", pos.X);
             cmd.Parameters.AddWithValue("@y", pos.Y);
             cmd.Parameters.AddWithValue("@z", pos.Z);
-            con.Open();
             cmd.ExecuteNonQuery();
 
             long id = cmd.LastInsertedId;
-            cmd = con.CreateCommand();
+            cmd = Database.getConnection().CreateCommand();
             cmd.CommandText = "INSERT INTO ShopData (id,X,Y,Z,class) VALUES (@id,@x,@y,@z,@class)";
             cmd.Parameters.AddWithValue("@id", id);
             cmd.Parameters.AddWithValue("@x", pos.X);
             cmd.Parameters.AddWithValue("@y", pos.Y);
             cmd.Parameters.AddWithValue("@z", pos.Z);
             cmd.Parameters.AddWithValue("@class", clas);
-            con.Open();
             cmd.ExecuteNonQuery();
             
             API.shared.createMarker(1, pos, new Vector3(), new Vector3(), new Vector3(1, 1, 1), 150, 0, 255, 0);
@@ -294,8 +277,7 @@ namespace RealifeGM.de.jojoa.mysql
 
             Vector3 p = null;
             
-            con = new MySqlConnection(conString);
-            cmd = con.CreateCommand();
+            cmd = Database.getConnection().CreateCommand();
             cmd.CommandText = "SELECT * FROM POIData WHERE id=@id";
             cmd.Parameters.AddWithValue("@id", sid);
             reader = cmd.ExecuteReader();
@@ -306,14 +288,14 @@ namespace RealifeGM.de.jojoa.mysql
                 p.Y = reader.GetFloat("Y");
                 p.Z = reader.GetFloat("Z");
             }
+            reader.Close();
 
             if(p == null)
             {
                 return false;
             }
 
-            con = new MySqlConnection(conString);
-            cmd = con.CreateCommand();
+            cmd = Database.getConnection().CreateCommand();
             cmd.CommandText = "UPDATE ShopData SET (SPX,SPY,SPZ,RTX,RTY,RTZ) VALUES (@spx,@spy,@spz,@rtx,@rty,@rtz) WHERE id=@id";
             cmd.Parameters.AddWithValue("@spx", pos.X);
             cmd.Parameters.AddWithValue("@spy", pos.Y);
@@ -322,11 +304,8 @@ namespace RealifeGM.de.jojoa.mysql
             cmd.Parameters.AddWithValue("@rty", rot.Y);
             cmd.Parameters.AddWithValue("@rtz", rot.Z);
             cmd.Parameters.AddWithValue("@id", sid);
-            con.Open();
             cmd.ExecuteNonQuery();
             return true;
         }
-
-
     }
 }

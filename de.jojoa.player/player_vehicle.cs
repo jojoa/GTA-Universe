@@ -17,7 +17,7 @@ namespace RealifeGM.de.jojoa.player
             API.onPlayerEnterVehicle += API_onPlayerEnterVehicle;
         }
 
-        private void API_onPlayerEnterVehicle(Client player, NetHandle vehicle)
+        private void API_onPlayerEnterVehicle(Client player, NetHandle vehicle, int targetSeat)
         {
             Vehicle v = API.getEntityFromHandle<Vehicle>(vehicle);
             VehicleD vd = methods.getMethods.getVehiclebyVehicle(v);
