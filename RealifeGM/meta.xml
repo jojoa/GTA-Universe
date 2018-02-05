@@ -1,0 +1,13 @@
+﻿<meta>
+  <info name="RealifeGM" author="jojoa" type="script" />
+
+  <script src="de.jojoa.main/Main.cs" type="server" lang="csharp" />
+  <script src="de.jojoa.player/player_cmds.cs" type="server" lang="csharp" />
+  <script src="de.jojoa.methods/stringMethods.cs" type="server" lang="csharp" />
+  <script src="de.jojoa.mysql/MYSQL_PlayerData.cs" type="server" lang="csharp" />
+  <script src="de.jojoa.player/player_login.cs" type="server" lang="csharp" />
+  
+  <assembly ref="MySql.Data.dll" />
+  <assembly ref="System.Xml.dll" />
+  <assembly ref="System.Data.dll" />
+</meta>
