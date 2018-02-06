@@ -1,0 +1,5 @@
+﻿################################################################################
+# Diese .gitignore-Datei wurde von Microsoft(R) Visual Studio automatisch erstellt.
+################################################################################
+
+/GTA-Reallife/.vs/GTA-Reallife/v15/Server/sqlite3
