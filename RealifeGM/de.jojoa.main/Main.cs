@@ -1,4 +1,7 @@
 ﻿using GrandTheftMultiplayer.Server.API;
+using GrandTheftMultiplayer.Server.Elements;
+using GrandTheftMultiplayer.Shared.Math;
+using RealifeGM.de.jojoa.data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +12,7 @@ namespace RealifeGM.de.jojoa.main
 {
     class Main : Script
     {
+       
         public Main()
         {
             API.onResourceStart += onScriptStart;
@@ -18,11 +22,23 @@ namespace RealifeGM.de.jojoa.main
         #region events
         public void onScriptStart()
         {
-            API.consoleOutput(de.jojoa.methods.stringMethods.console_prefix + "Das Script wurde erfolgreich gestartet.");
-
-
+            API.consoleOutput(de.jojoa.methods.stringMethods.console_ressource_start);
+            mysql.MySQL_InventoryData.loadInvs();
+            mysql.MySQL_PlayerData.loadAccounts();
+            JobAccounts();
+            mysql.MySQL_PropertyData.loadProps();
+            mysql.MySQL_Bank.loadBanks();
+            mysql.MySQL_Vehicles.loadVehicles();
+            mysql.MySQL_POIData.loadPOI();
+            //test
         }
         #endregion events
+        public void JobAccounts()
+        {
+            Account IM = new Account("IM", 0);
+        }
+
+        
 
     }
 }

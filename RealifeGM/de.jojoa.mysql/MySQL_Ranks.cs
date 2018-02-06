@@ -1,6 +1,5 @@
 ﻿using GrandTheftMultiplayer.Server.API;
 using GrandTheftMultiplayer.Server.Elements;
-using GrandTheftMultiplayer.Server.Managers;
 using MySql.Data.MySqlClient;
 using RealifeGM.de.jojoa.data;
 using System;
@@ -11,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace RealifeGM.de.jojoa.mysql
 {
-    class MySQL_PlayerData : Script
+    class MySQL_Ranks : Script
     {
         #region variables
         public static string conString = "SERVER=localhost;" + "DATABASE=realifegm;" + "UID=root;" + "PASSWORD=;";
@@ -20,7 +19,7 @@ namespace RealifeGM.de.jojoa.mysql
         public static MySqlDataReader reader;
         #endregion variables
 
-        public MySQL_PlayerData()
+        public MySQL_Ranks()
         {
             API.onResourceStart += API_onResourceStart;
         }
@@ -34,56 +33,31 @@ namespace RealifeGM.de.jojoa.mysql
         }
 
         #region registerPlayer
-        public static void registerPlayer(Client p , string hash)
+        public static void registerPlayer(Account name)
         {
             if (!isTableCreated())
                 return;
 
             con = new MySqlConnection(conString);
             cmd = con.CreateCommand();
-            cmd.CommandText = "INSERT INTO PlayerData (Name, Password, lastIP, level, money, skin, tutorial,spawnID, Invid) VALUES (@name, @hash, @ip, @level, @money, @skin, @tutorial,@spawn,@inv)";
+            cmd.CommandText = "INSERT INTO RankData (Name, createprop, removeprop, god, fly , kick, pos,id,createShop,createBank,spawncar,givemoney) VALUES (@name,@cp,@rp,@god,@fly,@kick,@pos,@id,@cs,@cb,@sc,@gm)";
             con.Open();
-            cmd.Parameters.AddWithValue("@name", p.name);
-            cmd.Parameters.AddWithValue("@hash", hash);
-            cmd.Parameters.AddWithValue("@ip", p.address);
-            cmd.Parameters.AddWithValue("@level",1);
-            cmd.Parameters.AddWithValue("@money", 5000);
-            cmd.Parameters.AddWithValue("@skin", "null");
-            cmd.Parameters.AddWithValue("@tutorial", false);
-            cmd.Parameters.AddWithValue("@inv",mysql.MySQL_InventoryData.createInv().id);
-            cmd.Parameters.AddWithValue("@spawn", "newbie");
+            cmd.Parameters.AddWithValue("@name", name.name);
+            cmd.Parameters.AddWithValue("@cp", 0);
+            cmd.Parameters.AddWithValue("@rp", 0);
+            cmd.Parameters.AddWithValue("@god", 0);
+            cmd.Parameters.AddWithValue("@fly", 0);
+            cmd.Parameters.AddWithValue("@kick", 0);
+            cmd.Parameters.AddWithValue("@pos", 0);
+            cmd.Parameters.AddWithValue("@cs", 0);
+            cmd.Parameters.AddWithValue("@cb", 0);
+            cmd.Parameters.AddWithValue("@sc", 0);
+            cmd.Parameters.AddWithValue("@gm", 0);
+            cmd.Parameters.AddWithValue("@id", name.id);
             cmd.ExecuteNonQuery();
             con.Close();
         }
         #endregion registerPlayer
-
-        #region playerExists
-        public static Boolean playerExists(Client p)
-        {
-            if (!isTableCreated())
-                return false;
-
-            con = new MySqlConnection(conString);
-            cmd = con.CreateCommand();
-            cmd.CommandText = "SELECT * FROM PlayerData";
-            con.Open();
-            reader = cmd.ExecuteReader();
-
-            while (reader.Read())
-            {
-                string name = reader.GetString("Name");
-                if (name == p.name)
-                {
-                    con.Close();
-                    reader.Close();
-                    return true;
-                }
-            }
-            con.Close();
-            reader.Close();
-            return false;
-        }
-        #endregion playerExists
 
         #region get
         public static String getString(Client p, string get)
@@ -93,12 +67,12 @@ namespace RealifeGM.de.jojoa.mysql
 
             con = new MySqlConnection(conString);
             cmd = con.CreateCommand();
-            cmd.CommandText = "SELECT * FROM PlayerData WHERE Name=@name";
+            cmd.CommandText = "SELECT * FROM RankData WHERE Name=@name";
             cmd.Parameters.AddWithValue("@name", p.name);
             con.Open();
             reader = cmd.ExecuteReader();
 
-            while(reader.Read())
+            while (reader.Read())
             {
                 string getted = reader.GetString(get);
                 return getted;
@@ -110,12 +84,12 @@ namespace RealifeGM.de.jojoa.mysql
 
         public static String getStringByName(string name, string get)
         {
-            if (!isTableCreated())
+           if (!isTableCreated())
                 return null;
 
             con = new MySqlConnection(conString);
             cmd = con.CreateCommand();
-            cmd.CommandText = "SELECT * FROM PlayerData WHERE Name=@name";
+            cmd.CommandText = "SELECT * FROM RankData WHERE Name=@name";
             cmd.Parameters.AddWithValue("@name", name);
             con.Open();
             reader = cmd.ExecuteReader();
@@ -137,7 +111,7 @@ namespace RealifeGM.de.jojoa.mysql
 
             con = new MySqlConnection(conString);
             cmd = con.CreateCommand();
-            cmd.CommandText = "SELECT * FROM PlayerData WHERE Name=@name";
+            cmd.CommandText = "SELECT * FROM RankData WHERE Name=@name";
             cmd.Parameters.AddWithValue("@name", p.name);
             con.Open();
             reader = cmd.ExecuteReader();
@@ -159,7 +133,7 @@ namespace RealifeGM.de.jojoa.mysql
 
             con = new MySqlConnection(conString);
             cmd = con.CreateCommand();
-            cmd.CommandText = "SELECT * FROM PlayerData WHERE Name=@name";
+            cmd.CommandText = "SELECT * FROM RankData WHERE Name=@name";
             cmd.Parameters.AddWithValue("@name", name);
             con.Open();
             reader = cmd.ExecuteReader();
@@ -176,14 +150,14 @@ namespace RealifeGM.de.jojoa.mysql
         #endregion get
 
         #region set
-        public static void set(Client p, string set,string whattoset)
+        public static void set(Client p, string set, string whattoset)
         {
             if (!isTableCreated())
                 return;
 
             con = new MySqlConnection(conString);
             cmd = con.CreateCommand();
-            cmd.CommandText = "UPDATE PlayerData SET " + set + "=@whattoset WHERE Name=@name";
+            cmd.CommandText = "UPDATE RankData SET " + set + "=@whattoset WHERE Name=@name";
             cmd.Parameters.AddWithValue("@whattoset", whattoset);
             cmd.Parameters.AddWithValue("@name", p.name);
             con.Open();
@@ -199,40 +173,52 @@ namespace RealifeGM.de.jojoa.mysql
             {
                 con = new MySqlConnection(conString);
                 cmd = con.CreateCommand();
-                cmd.CommandText = "CREATE TABLE IF NOT EXISTS PlayerData(Name VARCHAR(100), Password VARCHAR(100), lastIP VARCHAR(100), level int, money int, skin VARCHAR(100),tutorial VARCHAR(10),spawnID int,Invid int, id int AUTO_INCREMENT, PRIMARY KEY (id))";
+                cmd.CommandText = "CREATE TABLE IF NOT EXISTS RankData(Name VARCHAR(100),id int AUTO_INCREMENT,createprop tinyint,removeprop tinyint,fly tinyint,god tinyint,kick tinyint,pos tinyint ,createShop tinyint, createBank tinyint, spawncar tinyint, givemoney tinyint, PRIMARY KEY(id))";
                 con.Open();
                 cmd.ExecuteNonQuery();
                 return true;
-            }catch(Exception)
+            }
+            catch (Exception)
             {
                 return false;
             }
         }
 
-        public static void updateDatas(Client p)
-        {
-            set(p, "lastIP", p.address);
-        }
-
-        public static void loadAccounts()
+        public static Dictionary<string,Boolean> getRank(string user)
         {
             if (!isTableCreated())
-                return;
+                return null;
 
             con = new MySqlConnection(conString);
             cmd = con.CreateCommand();
-            cmd.CommandText = "SELECT * FROM PlayerData";
-           
+            cmd.CommandText = "SELECT * FROM RankData WHERE Name=@name";
+            cmd.Parameters.AddWithValue("@name", user);
+
             con.Open();
             reader = cmd.ExecuteReader();
 
             while (reader.Read())
             {
-                string name = reader.GetString("Name");
-                Account a = new Account(name);  
+                Dictionary<string, Boolean> dic = new Dictionary<string, bool>();
+                dic.Add("createprop", reader.GetBoolean("createprop"));
+                dic.Add("removeprop", reader.GetBoolean("removeprop"));
+                dic.Add("fly", reader.GetBoolean("fly"));
+                dic.Add("god", reader.GetBoolean("god"));
+                dic.Add("kick", reader.GetBoolean("kick"));
+                dic.Add("pos", reader.GetBoolean("pos"));
+                dic.Add("createShop", reader.GetBoolean("createShop"));
+                dic.Add("createBank", reader.GetBoolean("createBank"));
+                dic.Add("spawncar", reader.GetBoolean("spawncar"));
+                dic.Add("givemoney", reader.GetBoolean("givemoney"));
+                reader.Close();
+                con.Close();
+                return dic;
+
             }
+            
             reader.Close();
             con.Close();
+            return null;
         }
         #endregion othermethods
     }
