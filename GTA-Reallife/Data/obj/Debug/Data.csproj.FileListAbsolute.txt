@@ -11,3 +11,6 @@ C:\Users\johannes\Source\Repos\GTA-Universe\GTA-Reallife\Data\obj\Debug\Data.csp
 C:\Users\johannes\Source\Repos\GTA-Universe\GTA-Reallife\Data\obj\Debug\Data.csproj.CoreCompileInputs.cache
 C:\Users\johannes\Source\Repos\GTA-Universe\GTA-Reallife\Data\obj\Debug\Data.dll
 C:\Users\johannes\Source\Repos\GTA-Universe\GTA-Reallife\Data\obj\Debug\Data.pdb
+C:\Users\johannes\Source\Repos\GTA-Universe\GTA-Reallife\Data\obj\Debug\Data.Migrations.init.resources
+C:\Users\johannes\Source\Repos\GTA-Universe\GTA-Reallife\Data\obj\Debug\Data.csproj.GenerateResource.Cache
+C:\Users\johannes\Source\Repos\GTA-Universe\GTA-Reallife\Data\obj\Debug\Data.Migrations.bann.resources

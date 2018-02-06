@@ -20,18 +20,9 @@ namespace Data.Models
 
     #endregion
 
-    #region Ban Types
+    
 
-    public enum BannedType : Byte
-    {
-        None = 0,
-        Temporary = 1,
-        Lifetime = 2
-    }
-
-    #endregion
-
-    [Table("accounts")]
+    [Table("Accounts")]
     public class AccountModel
     {
         [Key]
@@ -53,12 +44,6 @@ namespace Data.Models
 
         [Column("last_seen", Order = 6), Required]
         public DateTime LastSeen { get; set; } = DateTime.Now;
-
-        [Column("banned", Order = 7)]
-        public bool IsBanned { get; set; } = false;
-
-        [Column("banned_type", Order = 8)]
-        public BannedType BanType { get; set; } = BannedType.None;
 
         // Relationship
         //public PocketModel Pocket { get; set; }
