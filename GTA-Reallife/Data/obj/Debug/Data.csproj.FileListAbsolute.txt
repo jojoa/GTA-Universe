@@ -1,0 +1,13 @@
+C:\Users\johannes\Source\Repos\GTA-Universe\GTA-Reallife\Data\bin\Debug\Data.dll.config
+C:\Users\johannes\Source\Repos\GTA-Universe\GTA-Reallife\Data\bin\Debug\Data.dll
+C:\Users\johannes\Source\Repos\GTA-Universe\GTA-Reallife\Data\bin\Debug\Data.pdb
+C:\Users\johannes\Source\Repos\GTA-Universe\GTA-Reallife\Data\bin\Debug\EntityFramework.dll
+C:\Users\johannes\Source\Repos\GTA-Universe\GTA-Reallife\Data\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\johannes\Source\Repos\GTA-Universe\GTA-Reallife\Data\bin\Debug\MySql.Data.dll
+C:\Users\johannes\Source\Repos\GTA-Universe\GTA-Reallife\Data\bin\Debug\MySql.Data.Entity.EF6.dll
+C:\Users\johannes\Source\Repos\GTA-Universe\GTA-Reallife\Data\bin\Debug\EntityFramework.xml
+C:\Users\johannes\Source\Repos\GTA-Universe\GTA-Reallife\Data\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\johannes\Source\Repos\GTA-Universe\GTA-Reallife\Data\obj\Debug\Data.csprojResolveAssemblyReference.cache
+C:\Users\johannes\Source\Repos\GTA-Universe\GTA-Reallife\Data\obj\Debug\Data.csproj.CoreCompileInputs.cache
+C:\Users\johannes\Source\Repos\GTA-Universe\GTA-Reallife\Data\obj\Debug\Data.dll
+C:\Users\johannes\Source\Repos\GTA-Universe\GTA-Reallife\Data\obj\Debug\Data.pdb

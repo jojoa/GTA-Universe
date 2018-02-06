@@ -3,3 +3,6 @@
 ################################################################################
 
 /GTA-Reallife/.vs/GTA-Reallife/v15/Server/sqlite3
+/GTA-Reallife/Server/obj/Debug
+/.vs
+/GTA-Reallife/.vs/GTAReallife/v15/Server/sqlite3
