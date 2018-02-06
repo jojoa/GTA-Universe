@@ -38,13 +38,13 @@ namespace Data.Models
         [Column("ban_time", Order = 7), Required]
         public DateTime BanTime { get; set; } = DateTime.MinValue;
 
-        [Column("ban_user", Order = 7), Required]
+        [Column("ban_user", Order = 8), Required]
         public String BanIssuer { get; set; } = "";
 
-        [Column("ban_reason", Order = 7), Required]
+        [Column("ban_reason", Order = 9), Required]
         public String BanReason { get; set; } = "No Reason";
 
-        [Column("ban_issued", Order = 7), Required]
+        [Column("ban_issued", Order = 10), Required]
         public DateTime BanIssueTime { get; set; } = DateTime.UtcNow;
 
         // Relationship

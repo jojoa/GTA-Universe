@@ -62,6 +62,10 @@
     <Compile Include="Migrations\201802061934482_bann.Designer.cs">
       <DependentUpon>201802061934482_bann.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201802061943371_bank.cs" />
+    <Compile Include="Migrations\201802061943371_bank.Designer.cs">
+      <DependentUpon>201802061943371_bank.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModel.cs" />
     <Compile Include="Models\BankModel.cs" />
@@ -80,6 +84,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201802061934482_bann.resx">
       <DependentUpon>201802061934482_bann.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802061943371_bank.resx">
+      <DependentUpon>201802061943371_bank.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

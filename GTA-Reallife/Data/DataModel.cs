@@ -27,6 +27,7 @@ namespace GTAReallife.Data
 
         public DbSet<AccountModel> Accounts { get; set; }
         public DbSet<BanModel> Banns { get; set; }
+        public DbSet<BankModel> Banks { get; set; }
 
 
     }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Data.Models
 {
     [Table("BankAccounts")]
-    class BankModel
+    public class BankModel
     {
         [Key]
         [Column("id", Order = 1)]
