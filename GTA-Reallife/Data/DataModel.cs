@@ -34,15 +34,31 @@ namespace GTAReallife.Data
                         .WithMany(t => t.Skin)
                         .HasForeignKey(p => p.AccountID);
 
+            modelBuilder.Entity<AccountModel>()
+                       .HasRequired(p => p.Inventory)
+                       .WithMany(t => t.AccountOwner)
+                       .HasForeignKey(p => p.InvID);
+
+            modelBuilder.Entity<VehicleModel>()
+                      .HasRequired(p => p.Inventory)
+                      .WithMany(t => t.VehicleOwner)
+                      .HasForeignKey(p => p.InvID);
+
+            modelBuilder.Entity<PropertyModel>()
+                      .HasRequired(p => p.Inventory)
+                      .WithMany(t => t.PropertyOwner)
+                      .HasForeignKey(p => p.InvID);
+
         }
 
         public DbSet<AccountModel> Accounts { get; set; }
         public DbSet<BanModel> Banns { get; set; }
         public DbSet<BankModel> Banks { get; set; }
-
         public DbSet<ItemModel> Items { get; set; }
         public DbSet<InventoryModel> Invs { get; set; }
         public DbSet<SkinModel> Skins { get; set; }
+        public DbSet<PropertyModel> Propertys { get; set; }
+        public DbSet<VehicleModel> Vehicles { get; set; }
 
 
     }

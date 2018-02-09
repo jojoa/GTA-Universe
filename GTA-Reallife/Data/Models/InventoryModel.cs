@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Data.Models
 {
-    [Table("Inventorys")]
+    [Table("Inventory")]
     public class InventoryModel
     {
         [Key]
@@ -19,7 +19,13 @@ namespace Data.Models
         [Column("items", Order = 2)]
         public List<ItemModel> Items { get; set; }
 
-        [Column("owner", Order = 3)]
-        public object Owner { get; set; }
+        [Column("owner-a", Order = 3)]
+        public List<AccountModel> AccountOwner { get; set; }
+
+        [Column("owner-p", Order = 4)]
+        public List<PropertyModel> PropertyOwner { get; set; }
+
+        [Column("owner-v", Order = 5)]
+        public List<VehicleModel> VehicleOwner { get; set; }
     }
 }
