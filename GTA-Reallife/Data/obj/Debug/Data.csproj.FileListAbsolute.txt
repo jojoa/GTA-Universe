@@ -15,3 +15,4 @@ C:\Users\johannes\Source\Repos\GTA-Universe\GTA-Reallife\Data\obj\Debug\Data.Mig
 C:\Users\johannes\Source\Repos\GTA-Universe\GTA-Reallife\Data\obj\Debug\Data.csproj.GenerateResource.Cache
 C:\Users\johannes\Source\Repos\GTA-Universe\GTA-Reallife\Data\obj\Debug\Data.Migrations.bann.resources
 C:\Users\johannes\Source\Repos\GTA-Universe\GTA-Reallife\Data\obj\Debug\Data.Migrations.bank.resources
+C:\Users\johannes\Source\Repos\GTA-Universe\GTA-Reallife\Data\obj\Debug\Data.Migrations.setup.resources
