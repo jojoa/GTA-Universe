@@ -45,6 +45,15 @@ namespace Data.Models
         [Column("last_seen", Order = 6), Required]
         public DateTime LastSeen { get; set; } = DateTime.Now;
 
+       
+        [Column("Inventory")]
+        public List<InventoryModel> Inv { get; set; }
+
+
+        [Column("Skin")]
+        public List<SkinModel> Skin { get; set; }
+
+
         // Relationship
         //public PocketModel Pocket { get; set; }
     }

@@ -6,20 +6,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
 namespace Data.Models
 {
-    [Table("Inventorys")]
-    public class InventoryModel
+    [Table("Skins")]
+    public class SkinModel
     {
         [Key]
         [Column("id", Order = 1)]
         public int id { get; set; }
 
-        [Column("items", Order = 2)]
-        public List<ItemModel> Items { get; set; }
+        [ForeignKey("AccountID")]
+        [Column("Account", Order = 2)]
+        public AccountModel Account { get; set; } 
 
-        [Column("owner", Order = 3)]
-        public object Owner { get; set; }
+        [Column("AccountID", Order = 3)]
+        public int AccountID { get; set; }
     }
 }

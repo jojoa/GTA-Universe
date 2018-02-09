@@ -23,6 +23,17 @@ namespace GTAReallife.Data
         {
             Database.SetInitializer<DataModel>(null);
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<ItemModel>()
+                        .HasRequired(p => p.Inventory)
+                        .WithMany(t => t.Items)
+                        .HasForeignKey(p => p.InvID);
+
+            modelBuilder.Entity<SkinModel>()
+                        .HasRequired(p => p.Account)
+                        .WithMany(t => t.Skin)
+                        .HasForeignKey(p => p.AccountID);
+
         }
 
         public DbSet<AccountModel> Accounts { get; set; }
@@ -31,6 +42,7 @@ namespace GTAReallife.Data
 
         public DbSet<ItemModel> Items { get; set; }
         public DbSet<InventoryModel> Invs { get; set; }
+        public DbSet<SkinModel> Skins { get; set; }
 
 
     }

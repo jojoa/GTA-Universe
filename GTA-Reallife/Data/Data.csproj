@@ -70,12 +70,17 @@
     <Compile Include="Migrations\201802091411140_setup.Designer.cs">
       <DependentUpon>201802091411140_setup.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201802091647417_setup3.cs" />
+    <Compile Include="Migrations\201802091647417_setup3.Designer.cs">
+      <DependentUpon>201802091647417_setup3.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModel.cs" />
     <Compile Include="Models\BankModel.cs" />
     <Compile Include="Models\BanModel.cs" />
     <Compile Include="Models\InventoryModel.cs" />
     <Compile Include="Models\ItemModel.cs" />
+    <Compile Include="Models\SkinModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -96,6 +101,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201802091411140_setup.resx">
       <DependentUpon>201802091411140_setup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802091647417_setup3.resx">
+      <DependentUpon>201802091647417_setup3.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

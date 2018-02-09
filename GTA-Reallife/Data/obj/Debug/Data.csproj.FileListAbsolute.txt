@@ -16,3 +16,4 @@ C:\Users\johannes\Source\Repos\GTA-Universe\GTA-Reallife\Data\obj\Debug\Data.csp
 C:\Users\johannes\Source\Repos\GTA-Universe\GTA-Reallife\Data\obj\Debug\Data.Migrations.bann.resources
 C:\Users\johannes\Source\Repos\GTA-Universe\GTA-Reallife\Data\obj\Debug\Data.Migrations.bank.resources
 C:\Users\johannes\Source\Repos\GTA-Universe\GTA-Reallife\Data\obj\Debug\Data.Migrations.setup.resources
+C:\Users\johannes\Source\Repos\GTA-Universe\GTA-Reallife\Data\obj\Debug\Data.Migrations.setup3.resources

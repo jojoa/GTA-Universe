@@ -25,7 +25,7 @@ namespace Data.Models
 
         [ForeignKey("InvID")]
         [Column("Invent")]
-        public InventoryModel Inv { get; set; }
+        public InventoryModel Inventory { get; set; }
 
         [Column("InvID")]
         public int InvID { get; set; }
