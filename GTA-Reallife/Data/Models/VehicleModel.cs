@@ -22,6 +22,11 @@ namespace Data.Models
         [Column("Inv-ID", Order = 3)]
         public int InvID { get; set; }
 
+        [ForeignKey("Acc-ID")]
+        [Column("Account", Order = 4)]
+        public AccountModel Account { get; set; }
 
+        [Column("Acc-ID", Order = 5)]
+        public int AccID { get; set; }
     }
 }

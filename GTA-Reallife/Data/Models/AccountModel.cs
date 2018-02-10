@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -15,7 +16,10 @@ namespace Data.Models
     {
         Player = 0,
         Supporter = 1,
-        Admin = 2
+        Moderator = 2,
+        Developer = 3,
+        Admin = 4,
+        Owner = 5
     }
 
     #endregion
@@ -54,6 +58,17 @@ namespace Data.Models
 
         [Column("Skin", Order = 9)]
         public List<SkinModel> Skin { get; set; }
+
+        [Column("Propertys", Order = 10)]
+        public List<PropertyModel> Props { get; set; }
+
+        [Column("Vehicles", Order = 11)]
+        public List<VehicleModel> Vehicles { get; set; }
+
+        [Column("Money", Order = 12)]
+        public int Money { get; set; }
+
+       
 
 
         

@@ -49,6 +49,18 @@ namespace GTAReallife.Data
                       .WithMany(t => t.PropertyOwner)
                       .HasForeignKey(p => p.InvID);
 
+            modelBuilder.Entity<VehicleModel>()
+                      .HasRequired(p => p.Account)
+                      .WithMany(t => t.Vehicles)
+                      .HasForeignKey(p => p.AccID);
+
+            modelBuilder.Entity<PropertyModel>()
+                      .HasRequired(p => p.Account)
+                      .WithMany(t => t.Props)
+                      .HasForeignKey(p => p.AccID);
+
+
+
         }
 
         public DbSet<AccountModel> Accounts { get; set; }
