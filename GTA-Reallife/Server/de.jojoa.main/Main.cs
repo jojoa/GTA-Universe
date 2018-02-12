@@ -12,7 +12,7 @@ namespace RealifeGM.de.jojoa.main
 {
     class Main : Script
     {
-       
+        public static string CONNECTION_STRING;
         public Main()
         {
             API.onResourceStart += onScriptStart;

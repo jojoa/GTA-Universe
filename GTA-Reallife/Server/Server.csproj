@@ -33,6 +33,12 @@
     <Reference Include="BCrypt.Net, Version=0.1.5073.29922, Culture=neutral, PublicKeyToken=6bcd409ee6bc9292, processorArchitecture=MSIL">
       <HintPath>..\packages\BCrypt-Official.0.1.109\lib\BCrypt.Net.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="GrandTheftMultiplayer.Server, Version=0.1.640.64, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\grandtheftmultiplayer.api.0.1.640.64\lib\net452\GrandTheftMultiplayer.Server.exe</HintPath>
     </Reference>
@@ -70,11 +76,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="de.jojoa.data\Account.cs" />
-    <Compile Include="de.jojoa.data\Bank_Account.cs" />
-    <Compile Include="de.jojoa.data\Inventory.cs" />
-    <Compile Include="de.jojoa.data\Property.cs" />
-    <Compile Include="de.jojoa.data\Vehicle.cs" />
+    <Compile Include="de.jojoa.data.main\Account.cs" />
+    <Compile Include="de.jojoa.data.controller\AccountController.cs" />
+    <Compile Include="de.jojoa.data.main\Bank_Account.cs" />
+    <Compile Include="de.jojoa.data.main\Inventory.cs" />
+    <Compile Include="de.jojoa.data.main\Property.cs" />
+    <Compile Include="de.jojoa.data.main\Vehicle.cs" />
     <Compile Include="de.jojoa.events\race_event.cs" />
     <Compile Include="de.jojoa.loggers\logger_teamcmd.cs" />
     <Compile Include="de.jojoa.loggers\logger_usercmd.cs" />
@@ -204,6 +211,12 @@
     <TypeScriptCompile Include="types-gt-mp\Definitions\System.d.ts" />
     <TypeScriptCompile Include="types-gt-mp\Definitions\System.Drawing.d.ts" />
     <TypeScriptCompile Include="types-gt-mp\Definitions\System.Windows.Forms.d.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Data\Data.csproj">
+      <Project>{9f485d7d-11fb-4855-8035-043528ce0a64}</Project>
+      <Name>Data</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

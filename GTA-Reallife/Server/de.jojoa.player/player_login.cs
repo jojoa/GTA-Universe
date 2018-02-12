@@ -3,6 +3,7 @@ using GrandTheftMultiplayer.Server.Constant;
 using GrandTheftMultiplayer.Server.Elements;
 using GrandTheftMultiplayer.Shared.Math;
 using RealifeGM.de.jojoa.data;
+using Server.de.jojoa.data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,13 +34,10 @@ namespace RealifeGM.de.jojoa.player
                     }
                     API.sendChatMessageToPlayer(p, methods.stringMethods.server_success_getted_data);
 
-                    if(mysql.MySQL_PlayerData.playerExists(p))
+                    if(AccountController.AccountExists(p))
                     {
-                        string hashedpw_stored = mysql.MySQL_PlayerData.getString(p, "Password");
-
-
-                        string hashedpw_input = API.getHashSHA256(arguments[0].ToString());
-                        if (hashedpw_input == hashedpw_stored)
+                       
+                        if (AccountController.Login(p.socialClubName,arguments[0].ToString()))
                         {
                             for (int i = 0; i < 50; i++)
                             {
@@ -47,9 +45,9 @@ namespace RealifeGM.de.jojoa.player
                             }
                             API.sendChatMessageToPlayer(p, methods.stringMethods.success_login);
                             API.consoleOutput(methods.stringMethods.console_login.Replace("%name%", p.name));
-                            
 
-                            mysql.MySQL_PlayerData.updateDatas(p);
+
+                            AccountController.updateJoin(p);
 
                             if(mysql.MySQL_PlayerData.getString(p,"skin") == "null")
                             {
